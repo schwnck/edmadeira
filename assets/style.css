@@ -3,6 +3,11 @@
     src: url('./fonts/Gilroy-Bold.woff2') format('woff2');
     font-weight: bold;
 }
+@font-face {
+    font-family: 'Gilroy';
+    src: url('./fonts/Gilroy-Light.woff2') format('woff2');
+    font-weight: 300; /* 300 é o padrão para Light */
+}
 
 .font-gilroy { font-family: 'Gilroy', sans-serif; }
 .font-serifa { font-family: 'Cormorant Garamond', serif; }
@@ -17,4 +22,12 @@
     z-index: 9999;
     transform: translate(-50%, -50%);
     transition: transform 0.15s ease;
+}
+/* Oculta a barra de rolagem do carrossel no Mobile, mas mantém a funcionalidade de deslizar */
+.hide-scroll {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+.hide-scroll::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
 }
