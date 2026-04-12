@@ -31,3 +31,17 @@
 .hide-scroll::-webkit-scrollbar {
     display: none; /* Chrome, Safari and Opera */
 }
+/* Ativa o Snap no contentor de scroll (o corpo ou o main) */
+html {
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+}
+
+/* Define onde cada 'paragem' deve acontecer */
+/* Adicionamos isto às secções invisíveis que criam a altura do scroll */
+.section-snap-point {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    height: 100vh;
+    width: 100%;
+}
