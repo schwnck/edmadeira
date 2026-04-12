@@ -87,8 +87,11 @@
     </div>
     </nav>
 
-    <main class="h-[400vh] relative">
-        <div class="sticky top-0 h-screen w-full overflow-hidden bg-black">
+  <main class="h-[400vh] relative">
+		<div class="absolute inset-0 z-0">
+        <div class="section-snap-point"></div> <div class="section-snap-point"></div> <div class="section-snap-point"></div> <div class="section-snap-point"></div> </div>
+       
+		<div class="sticky top-0 h-screen w-full overflow-hidden bg-black z-10">
             <div class="flex h-full w-[400vw] will-change-transform" 
                  :style="`transform: translateX(-${translatePercentage}vw);`"
                  style="transition: transform 0.1s ease-out;">
