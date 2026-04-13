@@ -158,36 +158,62 @@
                     
 <div class="mt-auto w-full max-w-full pb-4 md:pb-0 grid grid-cols-2 gap-3 sm:gap-4 md:flex md:gap-6 md:items-end md:overflow-x-auto md:hide-scroll md:snap-x md:snap-mandatory relative z-10">
                         
-                        <div @click="$dispatch('open-video', '1116215827')" class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0 md:snap-center">
-                            <img src="img/thumb-sabia.jpg" alt="thumb do vídeo Azeite Sabiá - Visitar é sentir" class="w-full h-full object-cover grayscale group-hover:grayscale-0 md:group-hover:scale-105 transition-all duration-700">
+<!--                        <div @click="$dispatch('open-video', '1116215827')" class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0 md:snap-center">-->
+	<div @click="$dispatch('open-video', { 
+        id: '1116215827', 
+        titulo: 'AZEITE SABIÁ - VISITAR É SENTIR',
+        cliente: 'Azeite Sabiá',
+        direcao: 'Nome do Diretor',
+        producao: 'Nome do Produtor',
+        som: 'Guilherme Schwenck'
+    })" 
+    class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0 md:snap-center">
+    </div>
+                            <img src="img/sabia-thumb.jpg" alt="thumb do vídeo Azeite Sabiá - Visitar é sentir" class="w-full h-full object-cover grayscale group-hover:grayscale-0 md:group-hover:scale-105 transition-all duration-700">
                             <div class="absolute inset-0 bg-black/40 md:group-hover:bg-transparent transition-all duration-500"></div>
                             <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-10">
                                 <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-xs text-white drop-shadow-md">Corporativo</h4>
                             </div>
                         </div>
 
-                        <div @click="$dispatch('open-video', '1086753978')" class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0 md:snap-center">
-                            <img src="img/thumb-equipe.jpg" alt="Thumb do vídeo InPEV - Equipe Cidadã 2025" class="w-full h-full object-cover grayscale group-hover:grayscale-0 md:group-hover:scale-105 transition-all duration-700">
+<!--                        <div @click="$dispatch('open-video', '1086753978')" class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0 md:snap-center">-->
+							<div @click="$dispatch('open-video', { 
+        id: '1086753978', 
+        titulo: 'INPEV - EQUIPE CIDADÃ 2025',
+        cliente: 'Inpev',
+        direcao: 'Freddy Leal',
+        producao: 'Erick Florentino',
+        som: 'Guilherme Schwenck'
+    })" 
+    class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0 md:snap-center">
+    </div>
+                            <img src="img/equipe-thumb.jpg" alt="Thumb do vídeo InPEV - Equipe Cidadã 2025" class="w-full h-full object-cover grayscale group-hover:grayscale-0 md:group-hover:scale-105 transition-all duration-700">
                             <div class="absolute inset-0 bg-black/40 md:group-hover:bg-transparent transition-all duration-500"></div>
                             <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-10">
                                 <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-xs text-white drop-shadow-md">Animação</h4>
                             </div>
-                        </div>
 
-                        <div @click="$dispatch('open-video', '922961824')" class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0 md:snap-center">
-                            <img src="img/thumb-coletivo.jpg" alt="Thumb do vídeo Coletivo Resistir e Existir: Uma Experiência de Educação para a Diversidade" class="w-full h-full object-cover grayscale group-hover:grayscale-0 md:group-hover:scale-105 transition-all duration-700">
+<!--                        <div @click="$dispatch('open-video', '922961824')" class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0 md:snap-center">-->
+<div @click="$dispatch('open-video', { 
+        id: '922961824', 
+        titulo: 'Coletivo Resistir e Existir: Uma Experiência de Educação para a Diversidade',
+		cliente: '',
+        direcao: '',
+        producao: '',
+        som: ''
+    })" 
+    class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0 md:snap-center">
+    </div>
+				<img src="img/coletivo-thumb.jpg" alt="Thumb do vídeo Coletivo Resistir e Existir: Uma Experiência de Educação para a Diversidade" class="w-full h-full object-cover grayscale group-hover:grayscale-0 md:group-hover:scale-105 transition-all duration-700">
                             <div class="absolute inset-0 bg-black/40 md:group-hover:bg-transparent transition-all duration-500"></div>
                             <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-10">
                                 <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-xs text-white drop-shadow-md">Documentário</h4>
-                            </div>
-                        </div>						
+                            </div>					
 						
                         <a href="https://vimeo.com/edmadeira" target="_blank" class="w-full md:w-48 aspect-video flex flex-col items-center justify-center border border-white/10 hover:border-[#ffc60a] transition-colors group md:shrink-0 md:snap-center bg-black/50 backdrop-blur-sm">
                             <span class="font-gilroy font-bold text-[8px] md:text-[10px] tracking-[0.2em] uppercase text-gray-400 group-hover:text-[#ffc60a] transition-colors">Ver todos no</span>
                             <span class="font-gilroy font-bold text-sm md:text-xl uppercase mt-1 text-white">Vimeo</span>
                         </a>
-
-                    </div>
                 </section>
 
                 <section id="sobre" class="w-screen h-screen flex-shrink-0 relative flex items-center justify-center border-r border-white/5">
@@ -239,33 +265,65 @@
             </div>
         </div>
     </main>
-<div x-data="{ open: false, vimeoId: '' }" 
-         @open-video.window="vimeoId = $event.detail; open = true;"
+<div x-data="{ 
+            open: false, 
+            vimeoId: '', 
+            titulo: '', 
+            cliente: '', 
+            direcao: '', 
+            producao: '', 
+            som: '' 
+         }" 
+         @open-video.window="
+            vimeoId = $event.detail.id;
+            titulo = $event.detail.titulo;
+            cliente = $event.detail.cliente;
+            direcao = $event.detail.direcao;
+            producao = $event.detail.producao;
+            som = $event.detail.som;
+            open = true;
+         "
          @keydown.escape.window="open = false; vimeoId = '';"
          x-show="open" 
-         class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-sm"
+         class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-sm p-4 md:p-10"
          style="display: none;">
         
         <div x-show="open"
-             x-transition:enter="transition ease-out duration-700"
+             x-transition:enter="transition ease-out duration-700 delay-100"
              x-transition:enter-start="opacity-0 scale-90 translate-y-8"
              x-transition:enter-end="opacity-100 scale-100 translate-y-0"
              x-transition:leave="transition ease-in duration-300"
              x-transition:leave-start="opacity-100 scale-100"
              x-transition:leave-end="opacity-0 scale-95"
-             class="relative w-full max-w-6xl aspect-video px-4 md:px-0">
+             class="relative w-full max-w-5xl flex flex-col gap-6">
             
-            <button @click="open = false; vimeoId = '';" class="absolute -top-12 right-4 md:-right-8 text-white hover:text-[#ffc60a] transition-colors group flex items-center gap-2">
+            <button @click="open = false; vimeoId = '';" class="absolute -top-10 md:-top-12 right-0 text-white hover:text-[#ffc60a] transition-colors group flex items-center gap-2 z-50">
                 <span class="font-gilroy text-xs tracking-[0.2em] uppercase opacity-0 group-hover:opacity-100 transition-opacity">Fechar</span>
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
 
-            <template x-if="open">
-                <iframe :src="`https://player.vimeo.com/video/${vimeoId}?autoplay=1&color=ffc60a&title=0&byline=0&portrait=0`" 
-                        class="w-full h-full shadow-2xl shadow-black/50" 
-                        frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen>
-                </iframe>
-            </template>
+            <div class="w-full aspect-video shadow-2xl shadow-black/50 bg-black">
+                <template x-if="open">
+                    <iframe :src="`https://player.vimeo.com/video/${vimeoId}?autoplay=1&color=ffc60a&title=0&byline=0&portrait=0`" 
+                            class="w-full h-full" 
+                            frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen>
+                    </iframe>
+                </template>
+            </div>
+
+            <div x-show="titulo" class="w-full flex flex-col md:flex-row gap-2 md:gap-16 text-white/70 font-gilroy text-xs md:text-sm tracking-wide">
+                <div class="flex-1">
+                    <h3 class="font-bold text-white text-lg md:text-xl uppercase tracking-widest mb-1" x-text="titulo"></h3>
+                    <p x-show="cliente"><span class="font-bold text-white/90">Cliente:</span> <span x-text="cliente"></span></p>
+                </div>
+                
+                <div class="flex-1 flex flex-col gap-1 md:border-l md:border-white/10 md:pl-8">
+                    <p x-show="direcao"><span class="font-bold text-white/90">Direção:</span> <span x-text="direcao"></span></p>
+                    <p x-show="producao"><span class="font-bold text-white/90">Produção:</span> <span x-text="producao"></span></p>
+                    <p x-show="som"><span class="font-bold text-white/90">Edição de som e mixagem:</span> <span x-text="som"></span></p>
+                </div>
+            </div>
+
         </div>
     </div>
 </body>
