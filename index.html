@@ -71,10 +71,6 @@
             <div class="absolute top-0 left-0 h-full bg-[#ffc60a] animate-loading-bar"></div>
         </div>
     </div>
-	
-    <div id="cursor" :style="`left: ${$mouse.clientX}px; top: ${$mouse.clientY}px;`" 
-         x-data="{ $mouse: { clientX: 0, clientY: 0 } }"
-         @mousemove.window="$mouse.clientX = $event.clientX; $mouse.clientY = $event.clientY"></div>
 
  <nav class="fixed top-0 w-full z-[100] flex justify-between items-center p-8 md:p-10 mix-blend-difference pointer-events-none">
 	 
