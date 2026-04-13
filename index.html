@@ -186,6 +186,7 @@
                         <div @click="$dispatch('open-video', { 
                                 id: '1116215827', 
                                 titulo: 'AZEITE SABIÁ - VISITAR É SENTIR',
+								descricao: 'Aqui vai a descrição do vídeo',
                                 cliente: 'Azeite Sabiá',
                                 direcao: 'Freddy Leal',
                                 producao: 'Erick Florentino',
@@ -218,8 +219,8 @@
                         <div @click="$dispatch('open-video', { 
         id: '922961824', 
         titulo: 'COLETIVO RESISTIR E EXISTIR',
-        descricao: 'teste de descrição', /* <--- A VÍRGULA QUE FALTAVA AQUI */
-        cliente: '',
+        descricao: 'teste de descrição',
+		cliente: '',
         direcao: '',
         producao: '',
         som: ''
@@ -351,7 +352,7 @@
                 </template>
             </div>
 
-            <div x-show="titulo" class="w-full flex flex-col md:flex-row gap-6 md:gap-16 text-white/70 font-gilroy text-base md:text-lg tracking-wide">
+            <div x-show="titulo" class="w-full flex flex-col md:flex-row gap-6 md:gap-16 text-white/70 font-gilroy text-sm md:text-base tracking-wide">
                 
                 <div class="flex-1">
                     <h3 class="font-gilroy font-bold text-[#ffc60a] text-lg md:text-xl uppercase tracking-widest mb-3" x-text="titulo"></h3>
