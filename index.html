@@ -61,8 +61,8 @@
          class="fixed inset-0 z-[99999] bg-black flex flex-col items-center justify-center pointer-events-none">
          
          <div class="text-3xl md:text-5xl tracking-tighter flex items-baseline animate-pulse">
-            <span class="font-gilroy font-old text-white">E</span>
-			<span class="font-gilroy font-old text-[#ffc60a]">d</span>
+            <span class="font-gilroy font-bold text-white">E</span>
+			<span class="font-gilroy font-bold text-[#ffc60a]">d</span>
             <span class="font-gilroy font-light uppercase text-white">MADEIRA</span>
             <span class="font-gilroy font-bold text-[#ffc60a]">.</span>
 		 </div>
@@ -216,21 +216,21 @@
                         </div>
 
                         <div @click="$dispatch('open-video', { 
-                                id: '922961824', 
-                                titulo: 'COLETIVO RESISTIR E EXISTIR',
-								descricao: 'teste de descrição'
-                                cliente: '',
-                                direcao: '',
-                                producao: '',
-                                som: ''
-                            })" 
-                             class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0">
-                            <img src="img/thumb-coletivo.jpg" alt="Thumb do vídeo Coletivo Resistir e Existir: Uma Experiência de Educação para a Diversidade" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt:>
-                            <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
-                            <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-10">
-                                <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-xs text-white">Documentário</h4>
-                            </div>
-                        </div>
+        id: '922961824', 
+        titulo: 'COLETIVO RESISTIR E EXISTIR',
+        descricao: 'teste de descrição', /* <--- A VÍRGULA QUE FALTAVA AQUI */
+        cliente: '',
+        direcao: '',
+        producao: '',
+        som: ''
+    })" 
+    class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0">
+    <img src="img/thumb-coletivo.jpg" alt="Thumb do vídeo Coletivo Resistir e Existir" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+    <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+    <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-10">
+        <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-xs text-white">Documentário</h4>
+    </div>
+</div>
 
                         <a href="https://vimeo.com/edmadeira" target="_blank" class="w-full md:w-48 aspect-video flex flex-col items-center justify-center border border-white/10 hover:border-[#ffc60a] transition-colors group md:shrink-0 bg-black/50 backdrop-blur-sm">
                             <span class="font-gilroy font-bold text-[8px] md:text-[10px] tracking-[0.2em] uppercase text-gray-400 group-hover:text-[#ffc60a]">Ver todos</span>
@@ -260,7 +260,7 @@
         Experiência e <br class="md:hidden"> Renovação
     </h2>
     
-    <p class="font-serifa text-x1 md:text-4xl italic text-gray-300 leading-relaxed">
+    <p class="font-serifa text-base md:text-4xl italic text-gray-300 leading-relaxed">
         Unimos a bagagem de profissionais experientes à energia de novos talentos. Acreditamos no cuidado artesanal de cada frame para entregar resultados que comunicam com clareza e impacto.
     </p>
 </div>
@@ -351,13 +351,18 @@
                 </template>
             </div>
 
-            <div x-show="titulo" class="w-full flex flex-col md:flex-row gap-2 md:gap-16 text-white/70 font-gilroy text-xs md:text-sm tracking-wide">
+            <div x-show="titulo" class="w-full flex flex-col md:flex-row gap-6 md:gap-16 text-white/70 font-gilroy text-xs md:text-sm tracking-wide">
+                
                 <div class="flex-1">
-                    <h3 class="font-gilroy font-bold text-[#ffc60a] text-lg md:text-xl uppercase tracking-widest mb-1" x-text="titulo"></h3>
-					<p x-show="descricao"><span x-text="descricao"></span></p>
+                    <h3 class="font-gilroy font-bold text-[#ffc60a] text-lg md:text-xl uppercase tracking-widest mb-3" x-text="titulo"></h3>
+                    
+                    <p x-show="descricao" 
+                       class="font-serifa text-base md:text-lg italic text-white/80 leading-relaxed border-t border-white/10 pt-3" 
+                       x-text="descricao"></p>
                 </div>
                 
-               <div class="flex-1 flex flex-col gap-1 md:border-l md:border-white/10 md:pl-8">
+                <div class="flex-1 flex flex-col gap-1 md:border-l md:border-white/10 md:pl-8">
+                    <p x-show="cliente"><span class="font-bold text-white/90">Cliente:</span> <span x-text="cliente"></span></p>
                     <p x-show="direcao"><span class="font-bold text-white/90">Direção:</span> <span x-text="direcao"></span></p>
                     <p x-show="filmmaker"><span class="font-bold text-white/90">Filmmaker:</span> <span x-text="filmmaker"></span></p>
                     <p x-show="producao"><span class="font-bold text-white/90">Produção:</span> <span x-text="producao"></span></p>
@@ -367,8 +372,8 @@
                     <p x-show="captacao_som"><span class="font-bold text-white/90">Captação de som:</span> <span x-text="captacao_som"></span></p>
                     <p x-show="mixagem"><span class="font-bold text-white/90">Mixagem:</span> <span x-text="mixagem"></span></p>
                 </div>
-                </div>
             </div>
+         </div>
 
     </div>
 </body>
