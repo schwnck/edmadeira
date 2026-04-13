@@ -218,6 +218,7 @@
                         <div @click="$dispatch('open-video', { 
                                 id: '922961824', 
                                 titulo: 'COLETIVO RESISTIR E EXISTIR',
+								descricao: 'teste de descrição'
                                 cliente: '',
                                 direcao: '',
                                 producao: '',
@@ -296,6 +297,7 @@
             open: false, 
             vimeoId: '', 
             titulo: '', 
+			descricao: '', 
             cliente: '', 
             direcao: '', 
             producao: '', 
@@ -304,6 +306,7 @@
          @open-video.window="
             vimeoId = $event.detail.id;
             titulo = $event.detail.titulo;
+			descricao = $event.detail.descricao;
             cliente = $event.detail.cliente;
             direcao = $event.detail.direcao;
             producao = $event.detail.producao;
@@ -341,11 +344,11 @@
             <div x-show="titulo" class="w-full flex flex-col md:flex-row gap-2 md:gap-16 text-white/70 font-gilroy text-xs md:text-sm tracking-wide">
                 <div class="flex-1">
                     <h3 class="font-gilroy font-bold text-[#ffc60a] text-lg md:text-xl uppercase tracking-widest mb-1" x-text="titulo"></h3>
-                    <p x-show="cliente"><span class="font-bold text-white/90">Cliente:</span> <span x-text="cliente"></span></p>
+					<p x-show="descricao"><span x-text="descricao"></span></p>
                 </div>
                 
                 <div class="flex-1 flex flex-col gap-1 md:border-l md:border-white/10 md:pl-8">
-					<p x-show="cliente"><span class="font-bold text-white/90">Cliente:</span> <span x-text="cliente"></span></p>
+                    <p x-show="cliente"><span class="font-bold text-white/90">Cliente:</span> <span x-text="cliente"></span></p>
                     <p x-show="direcao"><span class="font-bold text-white/90">Direção:</span> <span x-text="direcao"></span></p>
                     <p x-show="producao"><span class="font-bold text-white/90">Produção:</span> <span x-text="producao"></span></p>
                     <p x-show="som"><span class="font-bold text-white/90">Edição de som e mixagem:</span> <span x-text="som"></span></p>
