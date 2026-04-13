@@ -64,6 +64,7 @@ html {
 .section-snap-point {
     scroll-snap-align: start;
     scroll-snap-stop: always;
-    height: 100dvh; /* MUDANÇA: de vh para dvh */
+    height: 100vh;  /* 1. Plano B: Para o Dreamweaver não reclamar e para navegadores muito antigos */
+    height: 100dvh; /* 2. Plano A: Navegadores modernos de celular usam esta linha e ignoram a de cima */
     width: 100%;
 }
