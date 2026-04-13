@@ -61,10 +61,9 @@ html {
 }
 
 /* Define onde cada 'paragem' deve acontecer */
-/* Adicionamos isto às secções invisíveis que criam a altura do scroll */
 .section-snap-point {
     scroll-snap-align: start;
     scroll-snap-stop: always;
-    height: 100vh;
+    height: 100dvh; /* MUDANÇA: de vh para dvh */
     width: 100%;
 }
