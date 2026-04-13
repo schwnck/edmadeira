@@ -51,7 +51,7 @@
         };
         requestAnimationFrame(animation);
     }
-}" class="bg-black text-white overflow-x-hidden m-0 p-0 font-sans">
+}" class="bg-black text-white overflow-x-hidden overscroll-y-none m-0 p-0 font-sans">
 <div x-data="{ loading: true }" 
          x-init="window.addEventListener('load', () => { setTimeout(() => loading = false, 1200) })"
          x-show="loading" 
@@ -131,7 +131,7 @@
     </div>
 </div>
 	
-    <main class="h-[400vh] relative">
+    <main class="h-[400dvh] relative">
 		<div class="absolute inset-0 z-0">
         <div class="section-snap-point"></div> <div class="section-snap-point"></div> <div class="section-snap-point"></div> <div class="section-snap-point"></div> </div>
        
