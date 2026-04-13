@@ -13,6 +13,7 @@
 <body x-data="{ 
     scrollPos: 0,
     maxScroll: 0,
+	mobileMenuOpen: false, /* NOVA VARIÁVEL */
     init() {
         this.$nextTick(() => { this.maxScroll = document.documentElement.scrollHeight - window.innerHeight; });
         window.addEventListener('resize', () => { this.maxScroll = document.documentElement.scrollHeight - window.innerHeight; });
