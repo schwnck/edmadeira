@@ -67,11 +67,16 @@ html {
     height: 100dvh; /* 2. Plano A: Navegadores modernos de celular usam esta linha e ignoram a de cima */
     width: 100%;
 }
+/* Animação da Seta */
 @keyframes bounceHorizontal {
     0%, 100% { transform: translateX(0); }
     50% { transform: translateX(10px); }
 }
-
 .animate-bounce-horizontal {
     animation: bounceHorizontal 1.5s infinite ease-in-out;
+}
+
+/* Garante que o container de grid não quebre para baixo */
+#portfolio .grid {
+    grid-auto-columns: min-content; /* Força colunas novas a terem o tamanho do conteúdo (aspect-video) */
 }
