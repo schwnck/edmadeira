@@ -1,0 +1,82 @@
+@font-face {
+    font-family: 'Gilroy';
+    src: url('./fonts/Gilroy-Bold.woff2') format('woff2');
+    font-weight: bold;
+}
+@font-face {
+    font-family: 'Gilroy';
+    src: url('./fonts/Gilroy-Light.woff2') format('woff2');
+    font-weight: 300; /* 300 é o padrão para Light */
+}
+
+.font-gilroy { font-family: 'Gilroy', sans-serif; }
+.font-serifa { font-family: 'Cormorant Garamond', serif; }
+
+/* Animação do Preloader */
+@keyframes loadingBar {
+    0% { width: 0%; left: 0%; }
+    50% { width: 100%; left: 0%; }
+    100% { width: 0%; left: 100%; }
+}
+
+.animate-loading-bar {
+    animation: loadingBar 1.5s infinite ease-in-out;
+}
+
+/* O cursor customizado agora só aparece em dispositivos com mouse (Desktop) */
+@media (min-width: 1024px) {
+    #cursor {
+        width: 20px;
+        height: 20px;
+        border: 2px solid #ffc60a;
+        border-radius: 50%;
+        position: fixed;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition: transform 0.15s ease;
+        display: block;
+    }
+}
+
+/* Esconde o cursor por padrão em celulares e tablets */
+@media (max-width: 1023px) {
+    #cursor {
+        display: none !important;
+    }
+}
+
+/* Oculta a barra de rolagem do carrossel no Mobile, mas mantém a funcionalidade de deslizar */
+.hide-scroll {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+.hide-scroll::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+}
+/* Ativa o Snap no contentor de scroll (o corpo ou o main) */
+html {
+    scroll-snap-type: y mandatory;
+}
+
+/* Define onde cada 'paragem' deve acontecer */
+.section-snap-point {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    height: 100vh;  /* 1. Plano B: Para o Dreamweaver não reclamar e para navegadores muito antigos */
+    height: 100dvh; /* 2. Plano A: Navegadores modernos de celular usam esta linha e ignoram a de cima */
+    width: 100%;
+}
+/* Animação da Seta do Portfólio */
+@keyframes bounceHorizontal {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(10px); }
+}
+.animate-bounce-horizontal {
+    animation: bounceHorizontal 1.5s infinite ease-in-out;
+}
+
+/* Força as colunas da matriz do portfólio a se alinharem horizontalmente */
+#portfolio .grid {
+    grid-auto-columns: max-content;
+}
