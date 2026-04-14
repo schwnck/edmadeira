@@ -54,10 +54,10 @@
 .hide-scroll::-webkit-scrollbar {
     display: none; /* Chrome, Safari and Opera */
 }
+
 /* Ativa o Snap no contentor de scroll (o corpo ou o main) */
 html {
     scroll-snap-type: y mandatory;
-    scroll-behavior: smooth;
 }
 
 /* Define onde cada 'paragem' deve acontecer */
@@ -68,15 +68,41 @@ html {
     height: 100dvh; /* 2. Plano A: Navegadores modernos de celular usam esta linha e ignoram a de cima */
     width: 100%;
 }
-/* Matriz Desktop - 2 Linhas com Scroll Horizontal e Alinhamento à Base */
+
+/* Animação da Seta do Portfólio */
+@keyframes bounceHorizontal {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(10px); }
+}
+.animate-bounce-horizontal {
+    animation: bounceHorizontal 1.5s infinite ease-in-out;
+}
+
+/* ========================================================
+   MATRIZ DE PORTFÓLIO INTELIGENTE (Mobile 4xN | Desktop 2xN)
+   ======================================================== */
+
+.portfolio-matrix {
+    display: grid !important;
+    grid-auto-flow: column !important;
+    grid-auto-columns: max-content !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Configuração Mobile (4 linhas com espaçamento menor) */
+@media (max-width: 767px) {
+    .portfolio-matrix {
+        grid-template-rows: repeat(4, max-content) !important;
+        gap: 12px !important;
+    }
+}
+
+/* Configuração Desktop (2 linhas com espaçamento original) */
 @media (min-width: 768px) {
-    .desktop-matrix {
-        display: grid !important;
-        grid-template-columns: none !important;
+    .portfolio-matrix {
         grid-template-rows: repeat(2, max-content) !important;
-        grid-auto-flow: column !important;
-        grid-auto-columns: max-content !important;
-        overflow-x: auto !important;
-        scroll-snap-type: x mandatory !important;
+        gap: 24px !important;
     }
 }
