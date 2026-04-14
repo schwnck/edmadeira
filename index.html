@@ -434,15 +434,217 @@
              x-init="setTimeout(() => checkScroll($el), 500)"
              class="h-full grid grid-flow-col grid-rows-4 md:grid-rows-2 gap-4 md:gap-6 overflow-x-auto hide-scroll snap-x snap-mandatory">
             
-            <div @click="$dispatch('open-video', { id: '1116215827', titulo: 'NOME DO VÍDEO', cliente: 'CLIENTE', direcao: 'DIRETOR' })" 
+<!--            <div @click="$dispatch('open-video', { id: '1116215827', titulo: 'NOME DO VÍDEO', cliente: 'CLIENTE', direcao: 'DIRETOR' })" 
                  class="w-[70vw] md:w-[25vw] aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 shrink-0 snap-start">
                 <img src="img/thumb-sabia.jpg" alt="Thumb Sabiá" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
                 <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
                 <div class="absolute bottom-3 left-3 z-10">
                     <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-[10px] text-white">Categoria</h4>
                 </div>
-            </div>
+            </div>-->
 
+			<div class="mt-auto w-full relative z-20 grid grid-cols-2 gap-3 md:flex md:gap-6 md:items-end md:overflow-x-auto md:hide-scroll">
+                        
+                        <div @click="$dispatch('open-video', { 
+                                id: '1116215827', 
+                                titulo: 'AZEITE SABIÁ - VISITAR É SENTIR',
+								descricao: 'Aqui vai a descrição do vídeo',
+                                cliente: 'Azeite Sabiá',
+                                direcao: 'Freddy Leal',
+                                producao: 'Erick Florentino',
+                                som: 'Guilherme Schwenck'
+                            })" 
+                             class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0">
+                            <img src="img/thumb-sabia.jpg" alt="thumb do vídeo Azeite Sabiá - Visitar é sentir" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+                            <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-10">
+                                <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-xs text-white">Corporativo</h4>
+                            </div>
+                        </div>
+
+                        <div @click="$dispatch('open-video', { 
+                                id: '1086753978', 
+                                titulo: 'INPEV - EQUIPE CIDADÃ 2025',
+                                cliente: 'Inpev',
+                                direcao: 'Freddy Leal',
+                                producao: 'Erick Florentino',
+                                som: ''
+                            })" 
+                             class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0">
+                            <img src="img/thumb-equipe.jpg" alt="Thumb do vídeo InPEV - Equipe Cidadã 2025" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+                            <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-10">
+                                <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-xs text-white">Animação</h4>
+                            </div>
+                        </div>
+
+                        <div @click="$dispatch('open-video', { 
+        id: '922961824', 
+        titulo: 'COLETIVO RESISTIR E EXISTIR',
+        descricao: 'teste de descrição',
+		cliente: '',
+        direcao: '',
+        producao: '',
+        som: ''
+    })" 
+    class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0">
+    <img src="img/thumb-coletivo.jpg" alt="Thumb do vídeo Coletivo Resistir e Existir" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+    <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+    <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-10">
+        <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-xs text-white">Documentário</h4>
+    </div>
+</div>
+
+						  <div @click="$dispatch('open-video', { 
+                                id: '1116215827', 
+                                titulo: 'AZEITE SABIÁ - VISITAR É SENTIR',
+								descricao: 'Aqui vai a descrição do vídeo',
+                                cliente: 'Azeite Sabiá',
+                                direcao: 'Freddy Leal',
+                                producao: 'Erick Florentino',
+                                som: 'Guilherme Schwenck'
+                            })" 
+                             class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0">
+                            <img src="img/thumb-sabia.jpg" alt="thumb do vídeo Azeite Sabiá - Visitar é sentir" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+                            <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-10">
+                                <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-xs text-white">Corporativo</h4>
+                            </div>
+                        </div>
+
+                        <div @click="$dispatch('open-video', { 
+                                id: '1086753978', 
+                                titulo: 'INPEV - EQUIPE CIDADÃ 2025',
+                                cliente: 'Inpev',
+                                direcao: 'Freddy Leal',
+                                producao: 'Erick Florentino',
+                                som: ''
+                            })" 
+                             class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0">
+                            <img src="img/thumb-equipe.jpg" alt="Thumb do vídeo InPEV - Equipe Cidadã 2025" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+                            <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-10">
+                                <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-xs text-white">Animação</h4>
+                            </div>
+                        </div>
+
+                        <div @click="$dispatch('open-video', { 
+        id: '922961824', 
+        titulo: 'COLETIVO RESISTIR E EXISTIR',
+        descricao: 'teste de descrição',
+		cliente: '',
+        direcao: '',
+        producao: '',
+        som: ''
+    })" 
+    class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0">
+    <img src="img/thumb-coletivo.jpg" alt="Thumb do vídeo Coletivo Resistir e Existir" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+    <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+    <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-10">
+        <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-xs text-white">Documentário</h4>
+    </div>
+</div>
+						
+						  <div @click="$dispatch('open-video', { 
+                                id: '1116215827', 
+                                titulo: 'AZEITE SABIÁ - VISITAR É SENTIR',
+								descricao: 'Aqui vai a descrição do vídeo',
+                                cliente: 'Azeite Sabiá',
+                                direcao: 'Freddy Leal',
+                                producao: 'Erick Florentino',
+                                som: 'Guilherme Schwenck'
+                            })" 
+                             class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0">
+                            <img src="img/thumb-sabia.jpg" alt="thumb do vídeo Azeite Sabiá - Visitar é sentir" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+                            <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-10">
+                                <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-xs text-white">Corporativo</h4>
+                            </div>
+                        </div>
+
+                        <div @click="$dispatch('open-video', { 
+                                id: '1086753978', 
+                                titulo: 'INPEV - EQUIPE CIDADÃ 2025',
+                                cliente: 'Inpev',
+                                direcao: 'Freddy Leal',
+                                producao: 'Erick Florentino',
+                                som: ''
+                            })" 
+                             class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0">
+                            <img src="img/thumb-equipe.jpg" alt="Thumb do vídeo InPEV - Equipe Cidadã 2025" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+                            <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-10">
+                                <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-xs text-white">Animação</h4>
+                            </div>
+                        </div>
+
+                        <div @click="$dispatch('open-video', { 
+        id: '922961824', 
+        titulo: 'COLETIVO RESISTIR E EXISTIR',
+        descricao: 'teste de descrição',
+		cliente: '',
+        direcao: '',
+        producao: '',
+        som: ''
+    })" 
+    class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0">
+    <img src="img/thumb-coletivo.jpg" alt="Thumb do vídeo Coletivo Resistir e Existir" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+    <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+    <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-10">
+        <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-xs text-white">Documentário</h4>
+    </div>
+</div>
+						
+						  <div @click="$dispatch('open-video', { 
+                                id: '1116215827', 
+                                titulo: 'AZEITE SABIÁ - VISITAR É SENTIR',
+								descricao: 'Aqui vai a descrição do vídeo',
+                                cliente: 'Azeite Sabiá',
+                                direcao: 'Freddy Leal',
+                                producao: 'Erick Florentino',
+                                som: 'Guilherme Schwenck'
+                            })" 
+                             class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0">
+                            <img src="img/thumb-sabia.jpg" alt="thumb do vídeo Azeite Sabiá - Visitar é sentir" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+                            <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-10">
+                                <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-xs text-white">Corporativo</h4>
+                            </div>
+                        </div>
+
+                        <div @click="$dispatch('open-video', { 
+                                id: '1086753978', 
+                                titulo: 'INPEV - EQUIPE CIDADÃ 2025',
+                                cliente: 'Inpev',
+                                direcao: 'Freddy Leal',
+                                producao: 'Erick Florentino',
+                                som: ''
+                            })" 
+                             class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0">
+                            <img src="img/thumb-equipe.jpg" alt="Thumb do vídeo InPEV - Equipe Cidadã 2025" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+                            <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-10">
+                                <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-xs text-white">Animação</h4>
+                            </div>
+                        </div>
+
+                        <div @click="$dispatch('open-video', { 
+        id: '922961824', 
+        titulo: 'COLETIVO RESISTIR E EXISTIR',
+        descricao: 'teste de descrição',
+		cliente: '',
+        direcao: '',
+        producao: '',
+        som: ''
+    })" 
+    class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0">
+    <img src="img/thumb-coletivo.jpg" alt="Thumb do vídeo Coletivo Resistir e Existir" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+    <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+    <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-10">
+        <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-xs text-white">Documentário</h4>
+    </div>
+</div>
+			
             <a href="https://vimeo.com/edmadeira" target="_blank" 
                class="w-[70vw] md:w-[15vw] aspect-video flex flex-col items-center justify-center border border-white/10 hover:border-[#ffc60a] transition-colors group snap-start bg-black/50 backdrop-blur-sm">
                 <span class="font-gilroy font-bold text-[10px] tracking-[0.2em] uppercase text-gray-400 group-hover:text-[#ffc60a]">Ver mais no</span>
