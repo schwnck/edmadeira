@@ -78,28 +78,26 @@ html {
     animation: bounceHorizontal 1.5s infinite ease-in-out;
 }
 
-/* ========================================================
-   MATRIZ DE PORTFÓLIO INTELIGENTE (Mobile 4xN | Desktop 2xN)
-   ======================================================== */
-
+/* MATRIZ DE PORTFÓLIO (Mobile 4xN | Desktop 2xN) */
 .portfolio-matrix {
     display: grid !important;
     grid-auto-flow: column !important;
-    grid-auto-columns: max-content !important;
     overflow-x: auto !important;
     scroll-snap-type: x mandatory !important;
     -webkit-overflow-scrolling: touch;
+    align-content: end !important; /* Trava tudo pela base no Desktop */
 }
 
-/* Configuração Mobile (4 linhas com espaçamento menor) */
+/* Configuração Mobile (4 linhas) */
 @media (max-width: 767px) {
     .portfolio-matrix {
         grid-template-rows: repeat(4, max-content) !important;
         gap: 12px !important;
+        padding-bottom: 16px;
     }
 }
 
-/* Configuração Desktop (2 linhas com espaçamento original) */
+/* Configuração Desktop (2 linhas) */
 @media (min-width: 768px) {
     .portfolio-matrix {
         grid-template-rows: repeat(2, max-content) !important;
