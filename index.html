@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EdMADEIRA | Filmes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+
+<body x-data="{ 
+    scrollPos: 0,
+    maxScroll: 0,
+	mobileMenuOpen: false, /* NOVA VARIÁVEL */
+    init() {
+        this.$nextTick(() => { this.maxScroll = document.documentElement.scrollHeight - window.innerHeight; });
+        window.addEventListener('resize', () => { this.maxScroll = document.documentElement.scrollHeight - window.innerHeight; });
+        window.addEventListener('scroll', () => { this.scrollPos = window.pageYOffset; });
+    },
+    get translatePercentage() {
+        if (this.maxScroll === 0) return 0;
+        let ratio = this.scrollPos / this.maxScroll;
+        ratio = Math.max(0, Math.min(ratio, 1));
+        return ratio * 300; 
+    },
+    /* NOVO: O RADAR DE TELA ATUAL */
+    get currentSection() {
+        if (window.innerHeight === 0) return 0;
+        return Math.round(this.scrollPos / window.innerHeight);
+    },
+    scrollToSection(vhMultiplier) {
+        const targetPosition = window.innerHeight * vhMultiplier;
+        const startPosition = window.pageYOffset;
+        const distance = targetPosition - startPosition;
+        let startTime = null;
+        const duration = 1500; 
+        const ease = (t, b, c, d) => {
+            t /= d / 2;
+            if (t < 1) return c / 2 * t * t * t * t + b;
+            t -= 2;
+            return -c / 2 * (t * t * t * t - 2) + b;
+        };
+        const animation = (currentTime) => {
+            if (startTime === null) startTime = currentTime;
+            const timeElapsed = currentTime - startTime;
+            const run = ease(timeElapsed, startPosition, distance, duration);
+            window.scrollTo(0, run);
+            if (timeElapsed < duration) requestAnimationFrame(animation);
+        };
+        requestAnimationFrame(animation);
+    }
+}" class="bg-black text-white overflow-x-hidden overscroll-y-none m-0 p-0 font-sans">
+<div x-data="{ loading: true }" 
+         x-init="window.addEventListener('load', () => { setTimeout(() => loading = false, 1200) })"
+         x-show="loading" 
+         x-transition:leave="transition ease-in-out duration-1000"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         class="fixed inset-0 z-[99999] bg-black flex flex-col items-center justify-center pointer-events-none">
+         
+         <div class="text-3xl md:text-5xl tracking-tighter flex items-baseline animate-pulse">
+            <span class="font-gilroy font-bold text-white">E</span>
+			<span class="font-gilroy font-bold text-[#ffc60a]">d</span>
+            <span class="font-gilroy font-light uppercase text-white">MADEIRA</span>
+            <span class="font-gilroy font-bold text-[#ffc60a]">.</span>
+		 </div>
+        
+        <div class="w-32 h-[1px] bg-white/10 mt-8 relative overflow-hidden">
+            <div class="absolute top-0 left-0 h-full bg-[#ffc60a] animate-loading-bar"></div>
+        </div>
+    </div>
+
+ <nav class="fixed top-0 w-full z-[100] flex justify-between items-center p-8 md:p-10 mix-blend-difference pointer-events-none">
+	 
+    <a href="#" 
+       @click.prevent="scrollToSection(0); mobileMenuOpen = false" 
+       class="text-2xl tracking-tighter pointer-events-auto flex items-baseline">
+		<span class="font-gilroy font-bold text-white">E</span>
+		   <span class="font-gilroy font-bold text-[#ffc60a]">d</span>
+    <span class="font-gilroy font-light uppercase text-white">MADEIRA</span>
+    <span class="font-gilroy font-bold text-[#ffc60a]">.</span>
+</a>
+<div class="hidden md:flex space-x-8 font-gilroy font-bold text-[10px] tracking-[0.4em] uppercase opacity-70 pointer-events-auto">
+        <a href="#portfolio" @click.prevent="scrollToSection(1)" :class="currentSection === 1 ? 'text-[#ffc60a] opacity-100' : 'text-white hover:text-[#ffc60a] transition-colors'">Portfólio</a>
+        <a href="#sobre" @click.prevent="scrollToSection(2)" :class="currentSection === 2 ? 'text-[#ffc60a] opacity-100' : 'text-white hover:text-[#ffc60a] transition-colors'">Sobre</a>
+        <a href="#contato" @click.prevent="scrollToSection(3)" :class="currentSection === 3 ? 'text-[#ffc60a] opacity-100' : 'text-white hover:text-[#ffc60a] transition-colors'">Contato</a>
+    </div>    
+	
+	 <button @click="mobileMenuOpen = true" class="md:hidden pointer-events-auto text-white p-2">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 8h16M4 16h16"></path>
+        </svg>
+    </button>
+	
+	</nav>
+
+	<div x-show="mobileMenuOpen" 
+     x-transition:enter="transition ease-out duration-500"
+     x-transition:enter-start="translate-x-full"
+     x-transition:enter-end="translate-x-0"
+     x-transition:leave="transition ease-in duration-400"
+     x-transition:leave-start="translate-x-0"
+     x-transition:leave-end="translate-x-full"
+     class="fixed inset-0 z-[1000] bg-black flex flex-col p-10 justify-center"
+     style="display: none;">
+    
+    <button @click="mobileMenuOpen = false" class="absolute top-10 right-8 text-white group flex items-center gap-2">
+        <span class="font-gilroy text-[10px] tracking-[0.3em] uppercase opacity-50">Fechar</span>
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+    </button>
+
+    <div class="flex flex-col space-y-8 font-gilroy font-bold text-4xl uppercase tracking-tighter">
+        <a href="#portfolio" @click.prevent="scrollToSection(1); mobileMenuOpen = false" 
+           :class="currentSection === 1 ? 'text-[#ffc60a]' : 'text-white'">Portfólio</a>
+        
+        <a href="#sobre" @click.prevent="scrollToSection(2); mobileMenuOpen = false" 
+           :class="currentSection === 2 ? 'text-[#ffc60a]' : 'text-white'">Sobre</a>
+        
+        <a href="#contato" @click.prevent="scrollToSection(3); mobileMenuOpen = false" 
+           :class="currentSection === 3 ? 'text-[#ffc60a]' : 'text-white'">Contato</a>
+    </div>
+
+    <div class="absolute bottom-10 left-10">
+        <p class="font-gilroy text-[10px] tracking-[0.4em] uppercase text-white/30">EdMADEIRA Filmes © 2026</p>
+    </div>
+</div>
+	
+    <main class="h-[400dvh] relative">
+		<div class="absolute inset-0 z-0">
+        <div class="section-snap-point"></div> <div class="section-snap-point"></div> <div class="section-snap-point"></div> <div class="section-snap-point"></div> </div>
+       
+		<div class="sticky top-0 h-screen w-full overflow-hidden bg-black z-10">
+            <div class="flex h-full w-[400vw] will-change-transform" 
+                 :style="`transform: translateX(-${translatePercentage}vw);`"
+                 style="transition: transform 0.1s ease-out;">
+                
+                <section class="w-screen h-screen flex-shrink-0 relative flex flex-col items-center justify-center border-r border-white/5">
+                    <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover z-0 opacity-40 grayscale">
+                        <source src="img/edmadeira_01.webm" type="video/webm">
+                        <source src="img/edmadeira_01.mp4" type="video/mp4">
+                    </video>
+                    
+                    <div class="relative z-10 text-center flex flex-col items-center px-4">
+                        <img src="img/logo_edmadeira.png" alt="Logo EdMadeira" class="w-32 md:w-48 mb-8 drop-shadow-[0_0_15px_rgba(255,198,10,0.3)]">
+                        <h1 class="font-gilroy font-bold text-[clamp(3rem,8vw,8rem)] uppercase leading-[0.9] tracking-tighter">
+                            Precisão em<br>Moviment<span class="text-[#ffc60a]">o.</span>
+                        </h1>
+                        <p class="font-serifa italic text-lg md:text-2xl text-gray-400 mt-6 max-w-2xl mx-auto">
+                            Excelência em cada quadro. <br class="md:hidden"> Produção audiovisual boutique.
+                        </p>
+                    </div>
+
+                    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center space-y-2 opacity-50 z-10">
+                        <span class="font-gilroy font-bold text-[10px] tracking-[0.3em] uppercase">Scroll</span>
+                        <div class="w-[1px] h-12 bg-gradient-to-b from-[#ffc60a] to-transparent"></div>
+                    </div>
+                </section>
+				
+				
+		<!--		
+<section id="portfolio" class="w-screen h-screen flex-shrink-0 relative flex flex-col px-6 md:px-20 pt-24 md:pt-32 pb-8 md:pb-16 border-r border-white/5 bg-[#050505] overflow-hidden">
+                    
+                    <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+                        <img src="img/entrega-photo_1440.jpg" 
+                             srcset="img/entrega-photo_720.jpg 1280w,
+                                     img/entrega-photo_1080.jpg 1920w,
+                                     img/entrega-photo_1440.jpg 2560w"
+                             sizes="150vw"
+                             class="absolute top-0 w-[150vw] max-w-none h-full object-cover grayscale opacity-20 will-change-transform" 
+                             style="left: -25vw;"
+                             :style="`transform: translateX(${(translatePercentage - 100) * 0.2}vw);`" 
+                             alt="Fundo Portfólio">
+                    </div>
+
+                    <div class="relative z-10 mb-6 md:mb-0">
+                        <h2 class="font-gilroy font-bold text-3xl md:text-4xl uppercase text-white">Trabalhos Selecionados</h2>
+                        <div class="w-12 h-[2px] bg-[#ffc60a] mt-4"></div>
+                    </div>
+                    
+                    <div class="mt-auto w-full relative z-20 grid grid-cols-2 gap-3 md:flex md:gap-6 md:items-end md:overflow-x-auto md:hide-scroll">
+                        
+                        <div @click="$dispatch('open-video', { 
+                                id: '1116215827', 
+                                titulo: 'AZEITE SABIÁ - VISITAR É SENTIR',
+								descricao: 'Aqui vai a descrição do vídeo',
+                                cliente: 'Azeite Sabiá',
+                                direcao: 'Freddy Leal',
+                                producao: 'Erick Florentino',
+                                som: 'Guilherme Schwenck'
+                            })" 
+                             class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0">
+                            <img src="img/thumb-sabia.jpg" alt="thumb do vídeo Azeite Sabiá - Visitar é sentir" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+                            <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-10">
+                                <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-xs text-white">Corporativo</h4>
+                            </div>
+                        </div>
+
+                        <div @click="$dispatch('open-video', { 
+                                id: '1086753978', 
+                                titulo: 'INPEV - EQUIPE CIDADÃ 2025',
+                                cliente: 'Inpev',
+                                direcao: 'Freddy Leal',
+                                producao: 'Erick Florentino',
+                                som: ''
+                            })" 
+                             class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0">
+                            <img src="img/thumb-equipe.jpg" alt="Thumb do vídeo InPEV - Equipe Cidadã 2025" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+                            <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-10">
+                                <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-xs text-white">Animação</h4>
+                            </div>
+                        </div>
+
+                        <div @click="$dispatch('open-video', { 
+        id: '922961824', 
+        titulo: 'COLETIVO RESISTIR E EXISTIR',
+        descricao: 'teste de descrição',
+		cliente: '',
+        direcao: '',
+        producao: '',
+        som: ''
+    })" 
+    class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0">
+    <img src="img/thumb-coletivo.jpg" alt="Thumb do vídeo Coletivo Resistir e Existir" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+    <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+    <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-10">
+        <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-xs text-white">Documentário</h4>
+    </div>
+</div>
+						
+<!--						-->
+				<!--
+
+						  <div @click="$dispatch('open-video', { 
+                                id: '1116215827', 
+                                titulo: 'AZEITE SABIÁ - VISITAR É SENTIR',
+								descricao: 'Aqui vai a descrição do vídeo',
+                                cliente: 'Azeite Sabiá',
+                                direcao: 'Freddy Leal',
+                                producao: 'Erick Florentino',
+                                som: 'Guilherme Schwenck'
+                            })" 
+                             class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0">
+                            <img src="img/thumb-sabia.jpg" alt="thumb do vídeo Azeite Sabiá - Visitar é sentir" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+                            <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-10">
+                                <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-xs text-white">Corporativo</h4>
+                            </div>
+                        </div>
+
+                        <div @click="$dispatch('open-video', { 
+                                id: '1086753978', 
+                                titulo: 'INPEV - EQUIPE CIDADÃ 2025',
+                                cliente: 'Inpev',
+                                direcao: 'Freddy Leal',
+                                producao: 'Erick Florentino',
+                                som: ''
+                            })" 
+                             class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0">
+                            <img src="img/thumb-equipe.jpg" alt="Thumb do vídeo InPEV - Equipe Cidadã 2025" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+                            <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-10">
+                                <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-xs text-white">Animação</h4>
+                            </div>
+                        </div>
+
+                        <div @click="$dispatch('open-video', { 
+        id: '922961824', 
+        titulo: 'COLETIVO RESISTIR E EXISTIR',
+        descricao: 'teste de descrição',
+		cliente: '',
+        direcao: '',
+        producao: '',
+        som: ''
+    })" 
+    class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0">
+    <img src="img/thumb-coletivo.jpg" alt="Thumb do vídeo Coletivo Resistir e Existir" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+    <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+    <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-10">
+        <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-xs text-white">Documentário</h4>
+    </div>
+</div>
+						
+						  <div @click="$dispatch('open-video', { 
+                                id: '1116215827', 
+                                titulo: 'AZEITE SABIÁ - VISITAR É SENTIR',
+								descricao: 'Aqui vai a descrição do vídeo',
+                                cliente: 'Azeite Sabiá',
+                                direcao: 'Freddy Leal',
+                                producao: 'Erick Florentino',
+                                som: 'Guilherme Schwenck'
+                            })" 
+                             class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0">
+                            <img src="img/thumb-sabia.jpg" alt="thumb do vídeo Azeite Sabiá - Visitar é sentir" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+                            <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-10">
+                                <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-xs text-white">Corporativo</h4>
+                            </div>
+                        </div>
+
+                        <div @click="$dispatch('open-video', { 
+                                id: '1086753978', 
+                                titulo: 'INPEV - EQUIPE CIDADÃ 2025',
+                                cliente: 'Inpev',
+                                direcao: 'Freddy Leal',
+                                producao: 'Erick Florentino',
+                                som: ''
+                            })" 
+                             class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0">
+                            <img src="img/thumb-equipe.jpg" alt="Thumb do vídeo InPEV - Equipe Cidadã 2025" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+                            <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-10">
+                                <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-xs text-white">Animação</h4>
+                            </div>
+                        </div>
+
+                        <div @click="$dispatch('open-video', { 
+        id: '922961824', 
+        titulo: 'COLETIVO RESISTIR E EXISTIR',
+        descricao: 'teste de descrição',
+		cliente: '',
+        direcao: '',
+        producao: '',
+        som: ''
+    })" 
+    class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0">
+    <img src="img/thumb-coletivo.jpg" alt="Thumb do vídeo Coletivo Resistir e Existir" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+    <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+    <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-10">
+        <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-xs text-white">Documentário</h4>
+    </div>
+</div>
+						
+						  <div @click="$dispatch('open-video', { 
+                                id: '1116215827', 
+                                titulo: 'AZEITE SABIÁ - VISITAR É SENTIR',
+								descricao: 'Aqui vai a descrição do vídeo',
+                                cliente: 'Azeite Sabiá',
+                                direcao: 'Freddy Leal',
+                                producao: 'Erick Florentino',
+                                som: 'Guilherme Schwenck'
+                            })" 
+                             class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0">
+                            <img src="img/thumb-sabia.jpg" alt="thumb do vídeo Azeite Sabiá - Visitar é sentir" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+                            <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-10">
+                                <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-xs text-white">Corporativo</h4>
+                            </div>
+                        </div>
+
+                        <div @click="$dispatch('open-video', { 
+                                id: '1086753978', 
+                                titulo: 'INPEV - EQUIPE CIDADÃ 2025',
+                                cliente: 'Inpev',
+                                direcao: 'Freddy Leal',
+                                producao: 'Erick Florentino',
+                                som: ''
+                            })" 
+                             class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0">
+                            <img src="img/thumb-equipe.jpg" alt="Thumb do vídeo InPEV - Equipe Cidadã 2025" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+                            <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-10">
+                                <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-xs text-white">Animação</h4>
+                            </div>
+                        </div>
+
+                        <div @click="$dispatch('open-video', { 
+        id: '922961824', 
+        titulo: 'COLETIVO RESISTIR E EXISTIR',
+        descricao: 'teste de descrição',
+		cliente: '',
+        direcao: '',
+        producao: '',
+        som: ''
+    })" 
+    class="w-full md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 md:shrink-0">
+    <img src="img/thumb-coletivo.jpg" alt="Thumb do vídeo Coletivo Resistir e Existir" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+    <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+    <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-10">
+        <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-xs text-white">Documentário</h4>
+    </div>
+</div>
+						
+<!--						-->
+				<!--
+						
+                        <a href="https://vimeo.com/edmadeira" target="_blank" class="w-full md:w-48 aspect-video flex flex-col items-center justify-center border border-white/10 hover:border-[#ffc60a] transition-colors group md:shrink-0 bg-black/50 backdrop-blur-sm">
+                            <span class="font-gilroy font-bold text-[8px] md:text-[10px] tracking-[0.2em] uppercase text-gray-400 group-hover:text-[#ffc60a]">Ver todos</span>
+                            <span class="font-gilroy font-bold text-sm md:text-xl uppercase mt-1 text-white">Vimeo</span>
+                        </a>
+
+                    </div>
+                </section>
+		-->
+				<section id="portfolio" 
+         x-data="{ 
+            canScrollRight: true,
+            checkScroll(el) {
+                this.canScrollRight = el.scrollLeft < (el.scrollWidth - el.clientWidth - 50);
+            }
+         }"
+         class="w-screen h-screen flex-shrink-0 relative flex flex-col px-6 md:px-20 pt-24 md:pt-32 pb-8 md:pb-16 border-r border-white/5 bg-[#050505] overflow-hidden">
+    
+    <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <img src="img/entrega-photo_1440.jpg" 
+             srcset="img/entrega-photo_720.jpg 1280w, img/entrega-photo_1080.jpg 1920w, img/entrega-photo_1440.jpg 2560w"
+             sizes="150vw"
+             class="absolute top-0 w-[150vw] max-w-none h-full object-cover grayscale opacity-20 will-change-transform" 
+             style="left: -25vw;"
+             :style="`transform: translateX(${(translatePercentage - 100) * 0.2}vw);`" alt="Fundo">
+    </div>
+
+    <div class="relative z-10 mb-8 md:mb-12">
+        <h2 class="font-gilroy font-bold text-3xl md:text-4xl uppercase text-[#ffc60a]">Trabalhos Selecionados</h2>
+        <div class="w-12 h-[2px] bg-white/20 mt-4"></div>
+    </div>
+    
+    <div class="relative flex-1 min-h-0 z-20 group">
+        
+        <div x-show="canScrollRight" 
+             x-transition:fade
+             class="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-30 pointer-events-none bg-gradient-to-l from-[#050505] to-transparent h-full w-32 items-center justify-end pr-4">
+            <div class="animate-bounce-horizontal text-[#ffc60a]">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                </svg>
+            </div>
+        </div>
+
+        <div @scroll="checkScroll($el)"
+             x-init="setTimeout(() => checkScroll($el), 500)"
+             class="h-full grid grid-flow-col grid-rows-4 md:grid-rows-2 gap-4 md:gap-6 overflow-x-auto hide-scroll snap-x snap-mandatory">
+            
+            <div @click="$dispatch('open-video', { id: '1116215827', titulo: 'NOME DO VÍDEO', cliente: 'CLIENTE', direcao: 'DIRETOR' })" 
+                 class="w-[70vw] md:w-[25vw] aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 shrink-0 snap-start">
+                <img src="img/sabia-thumb.jpg" alt="Thumb Sabiá" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+                <div class="absolute bottom-3 left-3 z-10">
+                    <h4 class="font-gilroy font-bold uppercase tracking-widest text-[9px] md:text-[10px] text-white">Categoria</h4>
+                </div>
+            </div>
+
+            <a href="https://vimeo.com/edmadeira" target="_blank" 
+               class="w-[70vw] md:w-[15vw] aspect-video flex flex-col items-center justify-center border border-white/10 hover:border-[#ffc60a] transition-colors group snap-start bg-black/50 backdrop-blur-sm">
+                <span class="font-gilroy font-bold text-[10px] tracking-[0.2em] uppercase text-gray-400 group-hover:text-[#ffc60a]">Ver mais no</span>
+                <span class="font-gilroy font-bold text-sm md:text-xl uppercase mt-1 text-white">Vimeo</span>
+            </a>
+
+        </div>
+    </div>
+</section>
+
+                <section id="sobre" class="w-screen h-screen flex-shrink-0 relative flex items-center justify-center border-r border-white/5">
+ <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+<img src="img/sobre-photo_2560.jpg" 
+     srcset="img/sobre-photo_720.jpg 1280w,
+             img/sobre-photo_1080.jpg 1920w,
+             img/sobre-photo_1440.jpg 2560w"
+     sizes="150vw"
+     class="absolute top-0 w-[150vw] max-w-none h-full object-cover grayscale opacity-30 will-change-transform" 
+     style="left: -25vw;"
+     :style="`transform: translateX(${(translatePercentage - 200) * 0.2}vw);`" 
+     alt="Fundo Sobre">
+</div>
+
+<div class="relative z-10 text-center max-w-4xl px-8 will-change-transform"
+     :style="`transform: translateX(${-(translatePercentage - 200) * 0.08}vw);` text-center">
+    
+    <h2 class="font-gilroy font-bold text-3xl md:text-7xl uppercase mb-8 text-white leading-tight">
+        Experiência e <br class="md:hidden"> Renovação
+    </h2>
+    
+    <p class="font-serifa text-base md:text-4xl italic text-gray-300 leading-relaxed">
+        Unimos a bagagem de profissionais experientes à energia de novos talentos. Acreditamos no cuidado artesanal de cada frame para entregar resultados que comunicam com clareza e impacto.
+    </p>
+</div>
+                </section>
+
+                <section id="contato" class="w-screen h-screen flex-shrink-0 relative flex items-center justify-center">
+<div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+<img src="img/contato-photo_2560.jpg" 
+     srcset="img/contato-photo_720.jpg 1280w,
+             img/contato-photo_1080.jpg 1920w,
+             img/contato-photo_1440.jpg 2560w"
+     sizes="150vw"
+     class="absolute top-0 w-[150vw] max-w-none h-full object-cover grayscale opacity-20 will-change-transform" 
+     style="left: -25vw;"
+     :style="`transform: translateX(${(translatePercentage - 300) * 0.2}vw);`" 
+     alt="Fundo Contacto">
+</div>
+
+<div class="relative z-10 text-center will-change-transform"
+     :style="`transform: translateX(${-(translatePercentage - 300) * 0.08}vw);`">
+    <h2 class="font-gilroy font-bold text-[clamp(2rem,6vw,6rem)] uppercase mb-10 leading-none text-white">
+        Vamos construir o<br><span class="text-[#ffc60a]">próximo quadro?</span>
+    </h2>
+    <a href="mailto:contato@edmadeira.com.br" class="font-gilroy font-bold text-xl border-b-2 border-[#ffc60a] pb-2 hover:opacity-60 transition-opacity">
+        contato@edmadeira.com
+    </a>
+</div>
+                </section>
+
+            </div>
+        </div>
+    </main>
+<div x-data="{ 
+            open: false, 
+            vimeoId: '', 
+            titulo: '', 
+			descricao: '', /* NOVA VARIÁVEL */
+            cliente: '', 
+            direcao: '', 
+            filmmaker: '',
+            producao: '', 
+            assistente_direcao: '',
+            captacao_audio_mixagem: '',
+            edicao_som_mixagem: '',
+            captacao_som: '',
+            mixagem: ''
+         }" 
+         @open-video.window="
+            vimeoId = $event.detail.id;
+            titulo = $event.detail.titulo;
+            descricao = $event.detail.descricao; /* MAPEAMENTO */
+            cliente = $event.detail.cliente;
+            direcao = $event.detail.direcao;
+            filmmaker = $event.detail.filmmaker;
+            producao = $event.detail.producao;
+            assistente_direcao = $event.detail.assistente_direcao;
+            captacao_audio_mixagem = $event.detail.captacao_audio_mixagem;
+            edicao_som_mixagem = $event.detail.edicao_som_mixagem;
+            captacao_som = $event.detail.captacao_som;
+            mixagem = $event.detail.mixagem;
+            open = true;
+         "
+@keydown.escape.window="open = false; vimeoId = '';"
+         x-show="open" 
+         class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-sm p-4 md:p-10"
+         style="display: none;">
+        
+        <div x-show="open"
+             x-transition:enter="transition ease-out duration-700 delay-100"
+             x-transition:enter-start="opacity-0 scale-90 translate-y-8"
+             x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+             x-transition:leave="transition ease-in duration-300"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-95"
+             class="relative w-full max-w-5xl flex flex-col gap-6">
+            
+            <button @click="open = false; vimeoId = '';" class="absolute -top-10 md:-top-12 right-0 text-white hover:text-[#ffc60a] transition-colors group flex items-center gap-2 z-50">
+                <span class="font-gilroy text-xs tracking-[0.2em] uppercase opacity-0 group-hover:opacity-100 transition-opacity">Fechar</span>
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+
+            <div class="w-full aspect-video shadow-2xl shadow-black/50 bg-black">
+                <template x-if="open">
+                    <iframe :src="`https://player.vimeo.com/video/${vimeoId}?autoplay=1&color=ffc60a&title=0&byline=0&portrait=0`" 
+                            class="w-full h-full" 
+                            frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen>
+                    </iframe>
+                </template>
+            </div>
+
+            <div x-show="titulo" class="w-full flex flex-col md:flex-row gap-6 md:gap-16 text-white/70 font-gilroy text-sm md:text-base tracking-wide">
+                
+                <div class="flex-1">
+                    <h3 class="font-gilroy font-bold text-[#ffc60a] text-lg md:text-xl uppercase tracking-widest mb-3" x-text="titulo"></h3>
+                    
+                    <p x-show="descricao" 
+                       class="font-serifa text-base md:text-lg italic text-white/80 leading-relaxed border-t border-white/10 pt-3" 
+                       x-text="descricao"></p>
+                </div>
+                
+                <div class="flex-1 flex flex-col gap-1 md:border-l md:border-white/10 md:pl-8">
+                    <p x-show="cliente"><span class="font-gilroy font-bold text-white/90">Cliente:</span> <span class="font-serifa" x-text="cliente"></span></p>
+                    <p x-show="direcao"><span class="font-gilroy font-bold text-white/90">Direção:</span> <span class="font-serifa" x-text="direcao"></span></p>
+                    <p x-show="filmmaker"><span class="font-gilroy font-bold text-white/90">Filmmaker:</span> <span class="font-serifa" x-text="filmmaker"></span></p>
+                    <p x-show="producao"><span class="font-gilroy font-bold text-white/90">Produção:</span> <span class="font-serifa" x-text="producao"></span></p>
+                    <p x-show="assistente_direcao"><span class="font-gilroy font-bold text-white/90">Assistente de direção:</span> <span class="font-serifa" x-text="assistente_direcao"></span></p>
+                    <p x-show="captacao_audio_mixagem"><span class="font-gilroy font-bold text-white/90">Captação de áudio e mixagem:</span> <span class="font-serifa" x-text="captacao_audio_mixagem"></span></p>
+                    <p x-show="edicao_som_mixagem"><span class="font-gilroy font-bold text-white/90">Edição de som e mixagem:</span> <span class="font-serifa" x-text="edicao_som_mixagem"></span></p>
+                    <p x-show="captacao_som"><span class="font-gilroy font-bold text-white/90">Captação de som:</span> <span class="font-serifa" x-text="captacao_som"></span></p>
+                    <p x-show="mixagem"><span class="font-gilroy font-bold text-white/90">Mixagem:</span> <span class="font-serifa" x-text="mixagem"></span></p>
+                </div>
+            </div>
+         </div>
+
+    </div>
+</body>
+</html>
