@@ -68,3 +68,15 @@ html {
     height: 100dvh; /* 2. Plano A: Navegadores modernos de celular usam esta linha e ignoram a de cima */
     width: 100%;
 }
+/* Matriz Desktop - 2 Linhas com Scroll Horizontal e Alinhamento à Base */
+@media (min-width: 768px) {
+    .desktop-matrix {
+        display: grid !important;
+        grid-template-columns: none !important;
+        grid-template-rows: repeat(2, max-content) !important;
+        grid-auto-flow: column !important;
+        grid-auto-columns: max-content !important;
+        overflow-x: auto !important;
+        scroll-snap-type: x mandatory !important;
+    }
+}
