@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EdMADEIRA | Filmes</title>
     <script src="https://cdn.tailwindcss.com"></script>
-	
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/style.css">
@@ -30,17 +29,17 @@
         if (window.innerHeight === 0) return 0;
         return Math.round(this.scrollPos / window.innerHeight);
     },
-    /* Motor de salto infalível que protege a estrutura do HTML */
+    /* Motor Híbrido: Suave no Desktop, Força Bruta no Mobile */
     scrollToSection(index) {
         const destino = window.innerHeight * index;
-        const isMobile = window.matchMedia('(max-width: 767px)').matches;
+        const isDesktop = window.matchMedia('(min-width: 1024px)').matches;
         
-        if (isMobile) {
+        if (isDesktop) {
+            window.scrollTo({ top: destino, behavior: 'smooth' });
+        } else {
             document.documentElement.style.scrollSnapType = 'none';
             window.scrollTo(0, destino);
             setTimeout(() => { document.documentElement.style.scrollSnapType = ''; }, 50);
-        } else {
-            window.scrollTo({ top: destino, behavior: 'smooth' });
         }
     }
 }" class="bg-black text-white overflow-x-hidden overscroll-y-none m-0 p-0 font-sans">
@@ -51,7 +50,7 @@
          x-transition:leave="transition ease-in-out duration-1000"
          x-transition:leave-start="opacity-100"
          x-transition:leave-end="opacity-0"
-         class="fixed inset-0 z-[99999] bg-black flex flex-col items-center justify-center pointer-events-none">
+         class="fixed inset-0 z-[999999] bg-black flex flex-col items-center justify-center pointer-events-none">
          
          <div class="text-3xl md:text-5xl tracking-tighter flex items-baseline animate-pulse">
             <span class="font-gilroy font-bold text-white">E</span>
@@ -87,10 +86,9 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 8h16M4 16h16"></path>
             </svg>
         </button>
-        
     </nav>
 
-	<div x-show="mobileMenuOpen" 
+    <div x-show="mobileMenuOpen" 
          x-transition:enter="transition ease-out duration-500"
          x-transition:enter-start="translate-x-full"
          x-transition:enter-end="translate-x-0"
@@ -107,15 +105,15 @@
 
         <div class="flex flex-col space-y-8 font-gilroy font-bold text-4xl uppercase tracking-tighter">
             <a href="#portfolio" 
-               @click.prevent="mobileMenuOpen = false; setTimeout(() => scrollToSection(1), 100)" 
+               @click.prevent="scrollToSection(1); mobileMenuOpen = false" 
                :class="currentSection === 1 ? 'text-[#ffc60a]' : 'text-white'">Portfólio</a>
             
             <a href="#sobre" 
-               @click.prevent="mobileMenuOpen = false; setTimeout(() => scrollToSection(2), 100)" 
+               @click.prevent="scrollToSection(2); mobileMenuOpen = false" 
                :class="currentSection === 2 ? 'text-[#ffc60a]' : 'text-white'">Sobre</a>
             
             <a href="#contato" 
-               @click.prevent="mobileMenuOpen = false; setTimeout(() => scrollToSection(3), 100)" 
+               @click.prevent="scrollToSection(3); mobileMenuOpen = false" 
                :class="currentSection === 3 ? 'text-[#ffc60a]' : 'text-white'">Contato</a>
         </div>
 
@@ -123,7 +121,7 @@
             <p class="font-gilroy text-[10px] tracking-[0.4em] uppercase text-white/30">EdMADEIRA Filmes © 2026</p>
         </div>
     </div>
-	
+    
     <main class="h-[400dvh] relative">
 		<div class="absolute inset-0 z-0">
         <div class="section-snap-point"></div> <div class="section-snap-point"></div> <div class="section-snap-point"></div> <div class="section-snap-point"></div> </div>
