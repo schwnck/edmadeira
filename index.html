@@ -12,63 +12,62 @@
 	</head>
 
 	<body x-data="{ 
-		scrollPos: 0,
-		maxScroll: 0,
-		mobileMenuOpen: false,
-		init() {
-			this.$nextTick(() => { this.maxScroll = document.documentElement.scrollHeight - window.innerHeight; });
-			window.addEventListener('resize', () => { this.maxScroll = document.documentElement.scrollHeight - window.innerHeight; });
-			window.addEventListener('scroll', () => { this.scrollPos = window.pageYOffset; });
-		},
-		get translatePercentage() {
-			if (this.maxScroll === 0) return 0;
-			let ratio = this.scrollPos / this.maxScroll;
-			ratio = Math.max(0, Math.min(ratio, 1));
-			return ratio * 300; 
-		},
-		get currentSection() {
-			if (window.innerHeight === 0) return 0;
-			return Math.round(this.scrollPos / window.innerHeight);
-		},
-		/* NOVO: Motor bruto para Mobile e suave para Desktop */
+    scrollPos: 0,
+    maxScroll: 0,
+    mobileMenuOpen: false,
+    init() {
+        this.$nextTick(() => { this.maxScroll = document.documentElement.scrollHeight - window.innerHeight; });
+        window.addEventListener('resize', () => { this.maxScroll = document.documentElement.scrollHeight - window.innerHeight; });
+        window.addEventListener('scroll', () => { this.scrollPos = window.pageYOffset; });
+    },
+    get translatePercentage() {
+        if (this.maxScroll === 0) return 0;
+        let ratio = this.scrollPos / this.maxScroll;
+        ratio = Math.max(0, Math.min(ratio, 1));
+        return ratio * 300; 
+    },
+    get currentSection() {
+        if (window.innerHeight === 0) return 0;
+        return Math.round(this.scrollPos / window.innerHeight);
+    },
+    /* Motor de salto infalível que protege a estrutura do HTML */
     scrollToSection(index) {
         const destino = window.innerHeight * index;
+        const isMobile = window.matchMedia('(max-width: 767px)').matches;
         
-        if (window.innerWidth < 768) {
-            // MOBILE: Desliga o imã, pula instantaneamente (sem smooth) e religa o imã.
+        if (isMobile) {
             document.documentElement.style.scrollSnapType = 'none';
             window.scrollTo(0, destino);
             setTimeout(() => { document.documentElement.style.scrollSnapType = ''; }, 50);
         } else {
-            // DESKTOP: Mantém a fluidez e elegância
             window.scrollTo({ top: destino, behavior: 'smooth' });
         }
     }
-	}" class="bg-black text-white overflow-x-hidden overscroll-y-none m-0 p-0 font-sans">
-
-		<div x-data="{ loading: true }" 
-			 x-init="window.addEventListener('load', () => { setTimeout(() => loading = false, 1200) })"
-			 x-show="loading" 
-			 x-transition:leave="transition ease-in-out duration-1000"
-			 x-transition:leave-start="opacity-100"
-			 x-transition:leave-end="opacity-0"
-			 class="fixed inset-0 z-[999999] bg-black flex flex-col items-center justify-center pointer-events-none">
-
-			 <div class="text-3xl md:text-5xl tracking-tighter flex items-baseline animate-pulse">
-				<span class="font-gilroy font-bold text-white">E</span>
-				<span class="font-gilroy font-bold text-[#ffc60a]">d</span>
-				<span class="font-gilroy font-light uppercase text-white">MADEIRA</span>
-				<span class="font-gilroy font-bold text-[#ffc60a]">.</span>
-			 </div>
-
-			<div class="w-32 h-[1px] bg-white/10 mt-8 relative overflow-hidden">
-				<div class="absolute top-0 left-0 h-full bg-[#ffc60a] animate-loading-bar"></div>
-			</div>
-		</div>
-
-		<nav class="fixed top-0 w-full z-[99999] flex justify-between items-center p-6 md:p-10 md:mix-blend-difference pointer-events-none">
-
-			<a href="#hero" 
+}" class="bg-black text-white overflow-x-hidden overscroll-y-none m-0 p-0 font-sans">
+    
+    <div x-data="{ loading: true }" 
+         x-init="window.addEventListener('load', () => { setTimeout(() => loading = false, 1200) })"
+         x-show="loading" 
+         x-transition:leave="transition ease-in-out duration-1000"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         class="fixed inset-0 z-[99999] bg-black flex flex-col items-center justify-center pointer-events-none">
+         
+         <div class="text-3xl md:text-5xl tracking-tighter flex items-baseline animate-pulse">
+            <span class="font-gilroy font-bold text-white">E</span>
+            <span class="font-gilroy font-bold text-[#ffc60a]">d</span>
+            <span class="font-gilroy font-light uppercase text-white">MADEIRA</span>
+            <span class="font-gilroy font-bold text-[#ffc60a]">.</span>
+         </div>
+        
+        <div class="w-32 h-[1px] bg-white/10 mt-8 relative overflow-hidden">
+            <div class="absolute top-0 left-0 h-full bg-[#ffc60a] animate-loading-bar"></div>
+        </div>
+    </div>
+    
+    <nav class="fixed top-0 w-full z-[100] flex justify-between items-center p-8 md:p-10 mix-blend-difference pointer-events-none">
+         
+        <a href="#hero" 
            @click.prevent="scrollToSection(0); mobileMenuOpen = false" 
            class="text-2xl tracking-tighter pointer-events-auto flex items-baseline">
             <span class="font-gilroy font-bold text-white">E</span>
@@ -77,27 +76,19 @@
             <span class="font-gilroy font-bold text-[#ffc60a]">.</span>
         </a>
 
-			<div class="flex flex-col space-y-8 font-gilroy font-bold text-4xl uppercase tracking-tighter">
-            <a href="#portfolio" 
-               @click.prevent="scrollToSection(1); mobileMenuOpen = false" 
-               :class="currentSection === 1 ? 'text-[#ffc60a]' : 'text-white'">Portfólio</a>
-            
-            <a href="#sobre" 
-               @click.prevent="scrollToSection(2); mobileMenuOpen = false" 
-               :class="currentSection === 2 ? 'text-[#ffc60a]' : 'text-white'">Sobre</a>
-            
-            <a href="#contato" 
-               @click.prevent="scrollToSection(3); mobileMenuOpen = false" 
-               :class="currentSection === 3 ? 'text-[#ffc60a]' : 'text-white'">Contato</a>
-        </div>   
-
-			<button @click="mobileMenuOpen = true" class="md:hidden pointer-events-auto text-white p-2">
-				<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 8h16M4 16h16"></path>
-				</svg>
-			</button>
-
-		</nav>
+        <div class="hidden md:flex space-x-8 font-gilroy font-bold text-[10px] tracking-[0.4em] uppercase opacity-70 pointer-events-auto">
+            <a href="#portfolio" @click.prevent="scrollToSection(1)" :class="currentSection === 1 ? 'text-[#ffc60a] opacity-100' : 'text-white hover:text-[#ffc60a] transition-colors'">Portfólio</a>
+            <a href="#sobre" @click.prevent="scrollToSection(2)" :class="currentSection === 2 ? 'text-[#ffc60a] opacity-100' : 'text-white hover:text-[#ffc60a] transition-colors'">Sobre</a>
+            <a href="#contato" @click.prevent="scrollToSection(3)" :class="currentSection === 3 ? 'text-[#ffc60a] opacity-100' : 'text-white hover:text-[#ffc60a] transition-colors'">Contato</a>
+        </div>    
+        
+        <button @click="mobileMenuOpen = true" class="md:hidden pointer-events-auto text-white p-2">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 8h16M4 16h16"></path>
+            </svg>
+        </button>
+        
+    </nav>
 
 		<div x-show="mobileMenuOpen" 
 			 x-transition:enter="transition ease-out duration-500"
