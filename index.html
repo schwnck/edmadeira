@@ -337,36 +337,35 @@
             open: false, 
             vimeoId: '', 
             titulo: '', 
-			descricao: '', /* NOVA VARIÁVEL */
+            descricao: '', 
             cliente: '', 
             direcao: '', 
             filmmaker: '',
             producao: '', 
             assistente_direcao: '',
+            assistente_audio: '',
             captacao_audio_mixagem: '',
             edicao_som_mixagem: '',
             captacao_som: '',
             mixagem: ''
-			animacao: '',
          }" 
          @open-video.window="
             vimeoId = $event.detail.id;
             titulo = $event.detail.titulo;
-            descricao = $event.detail.descricao; /* MAPEAMENTO */
+            descricao = $event.detail.descricao;
             cliente = $event.detail.cliente;
             direcao = $event.detail.direcao;
             filmmaker = $event.detail.filmmaker;
             producao = $event.detail.producao;
             assistente_direcao = $event.detail.assistente_direcao;
-			assistente_audio = $event.detail.assistente_audio;
+            assistente_audio = $event.detail.assistente_audio; /* <-- A NOVA CATEGORIA MAPEADA AQUI */
             captacao_audio_mixagem = $event.detail.captacao_audio_mixagem;
             edicao_som_mixagem = $event.detail.edicao_som_mixagem;
             captacao_som = $event.detail.captacao_som;
             mixagem = $event.detail.mixagem;
-            animacao = $event.detail.animacao;
             open = true;
          "
-@keydown.escape.window="open = false; vimeoId = '';"
+         @keydown.escape.window="open = false; vimeoId = '';"
          x-show="open" 
          class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-sm p-4 md:p-10"
          style="display: none;">
