@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EdMADEIRA | Filmes</title>
     <script src="https://cdn.tailwindcss.com"></script>
-	
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/style.css">
@@ -30,18 +29,17 @@
         if (window.innerHeight === 0) return 0;
         return Math.round(this.scrollPos / window.innerHeight);
     },
- /* NOVO: Motor bruto para Mobile e suave para Desktop */
+    /* Motor Híbrido: Suave no Desktop, Força Bruta no Mobile */
     scrollToSection(index) {
         const destino = window.innerHeight * index;
+        const isDesktop = window.matchMedia('(min-width: 1024px)').matches;
         
-        if (window.innerWidth < 768) {
-            // MOBILE: Desliga o imã, pula instantaneamente (sem smooth) e religa o imã.
+        if (isDesktop) {
+            window.scrollTo({ top: destino, behavior: 'smooth' });
+        } else {
             document.documentElement.style.scrollSnapType = 'none';
             window.scrollTo(0, destino);
             setTimeout(() => { document.documentElement.style.scrollSnapType = ''; }, 50);
-        } else {
-            // DESKTOP: Mantém a fluidez e elegância
-            window.scrollTo({ top: destino, behavior: 'smooth' });
         }
     }
 }" class="bg-black text-white overflow-x-hidden overscroll-y-none m-0 p-0 font-sans">
@@ -66,9 +64,9 @@
         </div>
     </div>
     
-    <nav class="fixed top-0 w-full z-[99999] flex justify-between items-center p-6 md:p-10 md:mix-blend-difference pointer-events-none">
+    <nav class="fixed top-0 w-full z-[100] flex justify-between items-center p-8 md:p-10 mix-blend-difference pointer-events-none">
          
-       <a href="#hero" 
+        <a href="#hero" 
            @click.prevent="scrollToSection(0); mobileMenuOpen = false" 
            class="text-2xl tracking-tighter pointer-events-auto flex items-baseline">
             <span class="font-gilroy font-bold text-white">E</span>
@@ -76,19 +74,11 @@
             <span class="font-gilroy font-light uppercase text-white">MADEIRA</span>
             <span class="font-gilroy font-bold text-[#ffc60a]">.</span>
         </a>
-		
-        <div class="flex flex-col space-y-8 font-gilroy font-bold text-4xl uppercase tracking-tighter">
-            <a href="#portfolio" 
-               @click.prevent="scrollToSection(1); mobileMenuOpen = false" 
-               :class="currentSection === 1 ? 'text-[#ffc60a]' : 'text-white'">Portfólio</a>
-            
-            <a href="#sobre" 
-               @click.prevent="scrollToSection(2); mobileMenuOpen = false" 
-               :class="currentSection === 2 ? 'text-[#ffc60a]' : 'text-white'">Sobre</a>
-            
-            <a href="#contato" 
-               @click.prevent="scrollToSection(3); mobileMenuOpen = false" 
-               :class="currentSection === 3 ? 'text-[#ffc60a]' : 'text-white'">Contato</a>
+
+        <div class="hidden md:flex space-x-8 font-gilroy font-bold text-[10px] tracking-[0.4em] uppercase opacity-70 pointer-events-auto">
+            <a href="#portfolio" @click.prevent="scrollToSection(1)" :class="currentSection === 1 ? 'text-[#ffc60a] opacity-100' : 'text-white hover:text-[#ffc60a] transition-colors'">Portfólio</a>
+            <a href="#sobre" @click.prevent="scrollToSection(2)" :class="currentSection === 2 ? 'text-[#ffc60a] opacity-100' : 'text-white hover:text-[#ffc60a] transition-colors'">Sobre</a>
+            <a href="#contato" @click.prevent="scrollToSection(3)" :class="currentSection === 3 ? 'text-[#ffc60a] opacity-100' : 'text-white hover:text-[#ffc60a] transition-colors'">Contato</a>
         </div>    
         
         <button @click="mobileMenuOpen = true" class="md:hidden pointer-events-auto text-white p-2">
@@ -96,10 +86,9 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 8h16M4 16h16"></path>
             </svg>
         </button>
-        
     </nav>
 
-	<div x-show="mobileMenuOpen" 
+    <div x-show="mobileMenuOpen" 
          x-transition:enter="transition ease-out duration-500"
          x-transition:enter-start="translate-x-full"
          x-transition:enter-end="translate-x-0"
@@ -116,15 +105,15 @@
 
         <div class="flex flex-col space-y-8 font-gilroy font-bold text-4xl uppercase tracking-tighter">
             <a href="#portfolio" 
-               @click.prevent="mobileMenuOpen = false; setTimeout(() => scrollToSection(1), 100)" 
+               @click.prevent="scrollToSection(1); mobileMenuOpen = false" 
                :class="currentSection === 1 ? 'text-[#ffc60a]' : 'text-white'">Portfólio</a>
             
             <a href="#sobre" 
-               @click.prevent="mobileMenuOpen = false; setTimeout(() => scrollToSection(2), 100)" 
+               @click.prevent="scrollToSection(2); mobileMenuOpen = false" 
                :class="currentSection === 2 ? 'text-[#ffc60a]' : 'text-white'">Sobre</a>
             
             <a href="#contato" 
-               @click.prevent="mobileMenuOpen = false; setTimeout(() => scrollToSection(3), 100)" 
+               @click.prevent="scrollToSection(3); mobileMenuOpen = false" 
                :class="currentSection === 3 ? 'text-[#ffc60a]' : 'text-white'">Contato</a>
         </div>
 
@@ -132,7 +121,7 @@
             <p class="font-gilroy text-[10px] tracking-[0.4em] uppercase text-white/30">EdMADEIRA Filmes © 2026</p>
         </div>
     </div>
-	
+    
     <main class="h-[400dvh] relative">
 		<div class="absolute inset-0 z-0">
         <div class="section-snap-point"></div> <div class="section-snap-point"></div> <div class="section-snap-point"></div> <div class="section-snap-point"></div> </div>
