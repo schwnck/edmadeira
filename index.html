@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EdMADEIRA | Filmes</title>
     <script src="https://cdn.tailwindcss.com"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+	
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/style.css">
@@ -113,7 +113,7 @@
      x-transition:leave-start="translate-x-0"
      x-transition:leave-end="translate-x-full"
      class="fixed inset-0 z-[1000] bg-black flex flex-col p-10 justify-center"
-     style="display: none;">
+     x-cloak>
     
     <button @click="mobileMenuOpen = false" class="absolute top-10 right-8 text-white group flex items-center gap-2">
         <span class="font-gilroy text-[10px] tracking-[0.3em] uppercase opacity-50">Fechar</span>
