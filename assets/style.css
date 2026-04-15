@@ -1,3 +1,5 @@
+/* Alpine.js - esconde elementos antes de inicializar */
+[x-cloak] { display: none !important; }
 @font-face {
     font-family: 'Gilroy';
     src: url('./fonts/Gilroy-Bold.woff2') format('woff2');
@@ -21,29 +23,6 @@
 
 .animate-loading-bar {
     animation: loadingBar 1.5s infinite ease-in-out;
-}
-
-/* O cursor customizado agora só aparece em dispositivos com mouse (Desktop) */
-@media (min-width: 1024px) {
-    #cursor {
-        width: 20px;
-        height: 20px;
-        border: 2px solid #ffc60a;
-        border-radius: 50%;
-        position: fixed;
-        pointer-events: none;
-        z-index: 9999;
-        transform: translate(-50%, -50%);
-        transition: transform 0.15s ease;
-        display: block;
-    }
-}
-
-/* Esconde o cursor por padrão em celulares e tablets */
-@media (max-width: 1023px) {
-    #cursor {
-        display: none !important;
-    }
 }
 
 /* Oculta a barra de rolagem do carrossel no Mobile, mas mantém a funcionalidade de deslizar */
