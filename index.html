@@ -30,11 +30,23 @@
         if (window.innerHeight === 0) return 0;
         return Math.round(this.scrollPos / window.innerHeight);
     },
-    /* NOVO: Motor de scroll cravado nos blocos invisíveis */
+    /* NOVO: Motor de scroll à prova de bugs do Safari/iOS */
         scrollToSection(index) {
             const target = document.getElementById('snap-' + index);
             if (target) {
-                target.scrollIntoView({ behavior: 'smooth' });
+                // 1. Desliga o "ímã" (snap) para o telemóvel não puxar de volta
+                document.documentElement.style.scrollSnapType = 'none';
+                
+                // 2. Faz o deslize perfeito e calculado
+                window.scrollTo({
+                    top: target.offsetTop,
+                    behavior: 'smooth'
+                });
+                
+                // 3. Religa o ímã silenciosamente quando a viagem terminar (800ms)
+                setTimeout(() => {
+                    document.documentElement.style.scrollSnapType = ''; 
+                }, 800);
             }
         }
 }" class="bg-black text-white overflow-x-hidden overscroll-y-none m-0 p-0 font-sans">
@@ -70,10 +82,18 @@
             <span class="font-gilroy font-bold text-[#ffc60a]">.</span>
         </a>
 
-        <div class="hidden md:flex space-x-8 font-gilroy font-bold text-[10px] tracking-[0.4em] uppercase opacity-70 pointer-events-auto">
-            <a href="#portfolio" @click.prevent="scrollToSection(1)" :class="currentSection === 1 ? 'text-[#ffc60a] opacity-100' : 'text-white hover:text-[#ffc60a] transition-colors'">Portfólio</a>
-            <a href="#sobre" @click.prevent="scrollToSection(2)" :class="currentSection === 2 ? 'text-[#ffc60a] opacity-100' : 'text-white hover:text-[#ffc60a] transition-colors'">Sobre</a>
-            <a href="#contato" @click.prevent="scrollToSection(3)" :class="currentSection === 3 ? 'text-[#ffc60a] opacity-100' : 'text-white hover:text-[#ffc60a] transition-colors'">Contato</a>
+        <div class="flex flex-col space-y-8 font-gilroy font-bold text-4xl uppercase tracking-tighter">
+            <a href="#portfolio" 
+               @click.prevent="mobileMenuOpen = false; scrollToSection(1)" 
+               :class="currentSection === 1 ? 'text-[#ffc60a]' : 'text-white'">Portfólio</a>
+            
+            <a href="#sobre" 
+               @click.prevent="mobileMenuOpen = false; scrollToSection(2)" 
+               :class="currentSection === 2 ? 'text-[#ffc60a]' : 'text-white'">Sobre</a>
+            
+            <a href="#contato" 
+               @click.prevent="mobileMenuOpen = false; scrollToSection(3)" 
+               :class="currentSection === 3 ? 'text-[#ffc60a]' : 'text-white'">Contato</a>
         </div>    
         
         <button @click="mobileMenuOpen = true" class="md:hidden pointer-events-auto text-white p-2">
@@ -101,15 +121,15 @@
 
         <div class="flex flex-col space-y-8 font-gilroy font-bold text-4xl uppercase tracking-tighter">
             <a href="#portfolio" 
-               @click.prevent="mobileMenuOpen = false; setTimeout(() => scrollToSection(1), 200)" 
+               @click.prevent="mobileMenuOpen = false; scrollToSection(1)" 
                :class="currentSection === 1 ? 'text-[#ffc60a]' : 'text-white'">Portfólio</a>
             
             <a href="#sobre" 
-               @click.prevent="mobileMenuOpen = false; setTimeout(() => scrollToSection(2), 200)" 
+               @click.prevent="mobileMenuOpen = false; scrollToSection(2)" 
                :class="currentSection === 2 ? 'text-[#ffc60a]' : 'text-white'">Sobre</a>
             
             <a href="#contato" 
-               @click.prevent="mobileMenuOpen = false; setTimeout(() => scrollToSection(3), 200)" 
+               @click.prevent="mobileMenuOpen = false; scrollToSection(3)" 
                :class="currentSection === 3 ? 'text-[#ffc60a]' : 'text-white'">Contato</a>
         </div>
 
