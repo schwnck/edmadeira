@@ -14,7 +14,7 @@
 <body x-data="{ 
     scrollPos: 0,
     maxScroll: 0,
-	mobileMenuOpen: false, /* NOVA VARIÁVEL */
+	mobileMenuOpen: false,
     init() {
         this.$nextTick(() => { this.maxScroll = document.documentElement.scrollHeight - window.innerHeight; });
         window.addEventListener('resize', () => { this.maxScroll = document.documentElement.scrollHeight - window.innerHeight; });
@@ -26,34 +26,20 @@
         ratio = Math.max(0, Math.min(ratio, 1));
         return ratio * 300; 
     },
-    /* NOVO: O RADAR DE TELA ATUAL */
     get currentSection() {
         if (window.innerHeight === 0) return 0;
         return Math.round(this.scrollPos / window.innerHeight);
     },
+    /* NOVO: A função agora usa o deslize suave nativo do navegador! */
     scrollToSection(vhMultiplier) {
-        const targetPosition = window.innerHeight * vhMultiplier;
-        const startPosition = window.pageYOffset;
-        const distance = targetPosition - startPosition;
-        let startTime = null;
-        const duration = 1500; 
-        const ease = (t, b, c, d) => {
-            t /= d / 2;
-            if (t < 1) return c / 2 * t * t * t * t + b;
-            t -= 2;
-            return -c / 2 * (t * t * t * t - 2) + b;
-        };
-        const animation = (currentTime) => {
-            if (startTime === null) startTime = currentTime;
-            const timeElapsed = currentTime - startTime;
-            const run = ease(timeElapsed, startPosition, distance, duration);
-            window.scrollTo(0, run);
-            if (timeElapsed < duration) requestAnimationFrame(animation);
-        };
-        requestAnimationFrame(animation);
+        window.scrollTo({
+            top: window.innerHeight * vhMultiplier,
+            behavior: 'smooth'
+        });
     }
 }" class="bg-black text-white overflow-x-hidden overscroll-y-none m-0 p-0 font-sans">
-<div x-data="{ loading: true }" 
+    
+    <div x-data="{ loading: true }" 
          x-init="window.addEventListener('load', () => { setTimeout(() => loading = false, 1200) })"
          x-show="loading" 
          x-transition:leave="transition ease-in-out duration-1000"
@@ -73,98 +59,90 @@
         </div>
     </div>
 	
-<nav class="fixed top-0 w-full z-[100] flex justify-between items-center p-8 md:p-10 mix-blend-difference pointer-events-none">
-	 
-    <a href="#" 
-       @click.prevent="scrollToSection(0); mobileMenuOpen = false" 
-       class="text-2xl tracking-tighter pointer-events-auto flex items-baseline">
-		<span class="font-gilroy font-bold text-white">E</span>
-		   <span class="font-gilroy font-bold text-[#ffc60a]">d</span>
-    <span class="font-gilroy font-light uppercase text-white">MADEIRA</span>
-    <span class="font-gilroy font-bold text-[#ffc60a]">.</span>
-</a>
-<div class="hidden md:flex space-x-8 font-gilroy font-bold text-[10px] tracking-[0.4em] uppercase opacity-70 pointer-events-auto">
-        <a href="#portfolio" @click.prevent="scrollToSection(1)" :class="currentSection === 1 ? 'text-[#ffc60a] opacity-100' : 'text-white hover:text-[#ffc60a] transition-colors'">Portfólio</a>
-        <a href="#sobre" @click.prevent="scrollToSection(2)" :class="currentSection === 2 ? 'text-[#ffc60a] opacity-100' : 'text-white hover:text-[#ffc60a] transition-colors'">Sobre</a>
-        <a href="#contato" @click.prevent="scrollToSection(3)" :class="currentSection === 3 ? 'text-[#ffc60a] opacity-100' : 'text-white hover:text-[#ffc60a] transition-colors'">Contato</a>
-    </div>    
-	
-	 <button @click="mobileMenuOpen = true" class="md:hidden pointer-events-auto text-white p-2">
-        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 8h16M4 16h16"></path>
-        </svg>
-    </button>
-	
-	</nav>
+    <nav class="fixed top-0 w-full z-[100] flex justify-between items-center p-8 md:p-10 mix-blend-difference pointer-events-none">
+         
+        <a href="#hero" 
+           @click.prevent="scrollToSection(0); mobileMenuOpen = false" 
+           class="text-2xl tracking-tighter pointer-events-auto flex items-baseline">
+            <span class="font-gilroy font-bold text-white">E</span>
+            <span class="font-gilroy font-bold text-[#ffc60a]">d</span>
+            <span class="font-gilroy font-light uppercase text-white">MADEIRA</span>
+            <span class="font-gilroy font-bold text-[#ffc60a]">.</span>
+        </a>
 
-	<div x-show="mobileMenuOpen" 
-     x-transition:enter="transition ease-out duration-500"
-     x-transition:enter-start="translate-x-full"
-     x-transition:enter-end="translate-x-0"
-     x-transition:leave="transition ease-in duration-400"
-     x-transition:leave-start="translate-x-0"
-     x-transition:leave-end="translate-x-full"
-     class="fixed inset-0 z-[1000] bg-black flex flex-col p-10 justify-center"
-     style="display: none;">
-    
-    <button @click="mobileMenuOpen = false" class="absolute top-10 right-8 text-white group flex items-center gap-2">
-        <span class="font-gilroy text-[10px] tracking-[0.3em] uppercase opacity-50">Fechar</span>
-        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path></svg>
-    </button>
-
-    <div class="flex flex-col space-y-8 font-gilroy font-bold text-4xl uppercase tracking-tighter">
-        <a href="#portfolio" @click.prevent="scrollToSection(1); mobileMenuOpen = false" 
-           :class="currentSection === 1 ? 'text-[#ffc60a]' : 'text-white'">Portfólio</a>
+        <div class="hidden md:flex space-x-8 font-gilroy font-bold text-[10px] tracking-[0.4em] uppercase opacity-70 pointer-events-auto">
+            <a href="#portfolio" @click.prevent="scrollToSection(1)" :class="currentSection === 1 ? 'text-[#ffc60a] opacity-100' : 'text-white hover:text-[#ffc60a] transition-colors'">Portfólio</a>
+            <a href="#sobre" @click.prevent="scrollToSection(2)" :class="currentSection === 2 ? 'text-[#ffc60a] opacity-100' : 'text-white hover:text-[#ffc60a] transition-colors'">Sobre</a>
+            <a href="#contato" @click.prevent="scrollToSection(3)" :class="currentSection === 3 ? 'text-[#ffc60a] opacity-100' : 'text-white hover:text-[#ffc60a] transition-colors'">Contato</a>
+        </div>    
         
-        <a href="#sobre" @click.prevent="scrollToSection(2); mobileMenuOpen = false" 
-           :class="currentSection === 2 ? 'text-[#ffc60a]' : 'text-white'">Sobre</a>
+        <button @click="mobileMenuOpen = true" class="md:hidden pointer-events-auto text-white p-2">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 8h16M4 16h16"></path>
+            </svg>
+        </button>
         
-        <a href="#contato" @click.prevent="scrollToSection(3); mobileMenuOpen = false" 
-           :class="currentSection === 3 ? 'text-[#ffc60a]' : 'text-white'">Contato</a>
-    </div>
+    </nav>
 
-    <div class="absolute bottom-10 left-10">
-        <p class="font-gilroy text-[10px] tracking-[0.4em] uppercase text-white/30">EdMADEIRA Filmes © 2026</p>
+    <div x-show="mobileMenuOpen" 
+         x-transition:enter="transition ease-out duration-500"
+         x-transition:enter-start="translate-x-full"
+         x-transition:enter-end="translate-x-0"
+         x-transition:leave="transition ease-in duration-400"
+         x-transition:leave-start="translate-x-0"
+         x-transition:leave-end="translate-x-full"
+         class="fixed inset-0 z-[1000] bg-black flex flex-col p-10 justify-center"
+         style="display: none;">
+        
+        <button @click="mobileMenuOpen = false" class="absolute top-10 right-8 text-white group flex items-center gap-2">
+            <span class="font-gilroy text-[10px] tracking-[0.3em] uppercase opacity-50">Fechar</span>
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+
+        <div class="flex flex-col space-y-8 font-gilroy font-bold text-4xl uppercase tracking-tighter">
+            <a href="#portfolio" @click.prevent="scrollToSection(1); mobileMenuOpen = false" 
+               :class="currentSection === 1 ? 'text-[#ffc60a]' : 'text-white'">Portfólio</a>
+            
+            <a href="#sobre" @click.prevent="scrollToSection(2); mobileMenuOpen = false" 
+               :class="currentSection === 2 ? 'text-[#ffc60a]' : 'text-white'">Sobre</a>
+            
+            <a href="#contato" @click.prevent="scrollToSection(3); mobileMenuOpen = false" 
+               :class="currentSection === 3 ? 'text-[#ffc60a]' : 'text-white'">Contato</a>
+        </div>
+
+        <div class="absolute bottom-10 left-10">
+            <p class="font-gilroy text-[10px] tracking-[0.4em] uppercase text-white/30">EdMADEIRA Filmes © 2026</p>
+        </div>
     </div>
-</div>
-	
+        
     <main class="h-[400dvh] relative">
-		<div class="absolute inset-0 z-0">
-        <div class="section-snap-point"></div> <div class="section-snap-point"></div> <div class="section-snap-point"></div> <div class="section-snap-point"></div> </div>
+        <div class="absolute inset-0 z-0">
+            <div class="section-snap-point"></div> 
+            <div class="section-snap-point"></div> 
+            <div class="section-snap-point"></div> 
+            <div class="section-snap-point"></div> 
+        </div>
        
-		<div class="sticky top-0 h-screen w-full overflow-hidden bg-black z-10">
+        <div class="sticky top-0 h-screen w-full overflow-hidden bg-black z-10">
             <div class="flex h-full w-[400vw] will-change-transform" 
                  :style="`transform: translateX(-${translatePercentage}vw);`"
                  style="transition: transform 0.1s ease-out;">
                 
-                <section class="w-screen h-screen flex-shrink-0 relative flex flex-col items-center justify-center border-r border-white/5">
-                  <!--  <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover z-0 opacity-40 grayscale">
+                <section id="hero" class="w-screen h-screen flex-shrink-0 relative flex flex-col items-center justify-center border-r border-white/5">
+                    <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover z-0 opacity-40 grayscale">
                         <source src="img/edmadeira_01.webm" type="video/webm">
                         <source src="img/edmadeira_01.mp4" type="video/mp4">
                     </video>
-                    -->
-<div class="absolute inset-0 z-0 overflow-hidden pointer-events-none grayscale opacity-40 flex items-center justify-center">
-    
-    <iframe src="https://player.vimeo.com/video/1076422237?background=1" 
-            frameborder="0" 
-            allow="autoplay; fullscreen" 
-            class="absolute max-w-none scale-125"
-            style="width: max(100vw, 177.78vh); height: max(100vh, 56.25vw);">
-    </iframe>
-
-</div>
-					
-				
-					<div class="relative z-10 text-center flex flex-col items-center px-4 will-change-transform"
-						 :style="`opacity: ${1 - (scrollPos / 500)}; transform: translateY(-${scrollPos * 0.4}px);`">
-						<img src="img/logo_edmadeira.png" alt="Logo EdMadeira" class="w-32 md:w-48 mb-8 drop-shadow-[0_0_15px_rgba(255,198,10,0.3)]">
-						<h1 class="font-gilroy font-bold text-[clamp(3rem,8vw,8rem)] uppercase leading-[0.9] tracking-tighter">
-							Precisão em<br>Moviment<span class="text-[#ffc60a]">o.</span>
-						</h1>
-						<p class="font-serifa italic text-lg md:text-2xl text-gray-400 mt-6 max-w-2xl mx-auto">
-							Excelência em cada quadro. <br class="md:hidden"> Produção audiovisual boutique.
-						</p>
-					</div>
+                    
+                    <div class="relative z-10 text-center flex flex-col items-center px-4">
+                        <img src="img/logo_edmadeira.png" alt="Logo EdMadeira" class="w-32 md:w-48 mb-8 drop-shadow-[0_0_15px_rgba(255,198,10,0.3)]">
+                        <h1 class="font-gilroy font-bold text-[clamp(3rem,8vw,8rem)] uppercase leading-[0.9] tracking-tighter">
+                            Precisão em<br>Moviment<span class="text-[#ffc60a]">o.</span>
+                        </h1>
+                        <p class="font-serifa italic text-lg md:text-2xl text-gray-400 mt-6 max-w-2xl mx-auto">
+                            Excelência em cada quadro. <br class="md:hidden"> Produção audiovisual boutique.
+                        </p>
+                    </div>
 
                     <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center space-y-2 opacity-50 z-10">
                         <span class="font-gilroy font-bold text-[10px] tracking-[0.3em] uppercase">Scroll</span>
