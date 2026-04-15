@@ -306,29 +306,98 @@
 </div>
                 </section>
 
-                <section id="contato" class="w-screen h-screen flex-shrink-0 relative flex items-center justify-center">
-<div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-<img src="img/contato-photo_2560.jpg" 
-     srcset="img/contato-photo_720.jpg 1280w,
-             img/contato-photo_1080.jpg 1920w,
-             img/contato-photo_1440.jpg 2560w"
-     sizes="150vw"
-     class="absolute top-0 w-[150vw] max-w-none h-full object-cover grayscale opacity-20 will-change-transform" 
-     style="left: -25vw;"
-     :style="`transform: translateX(${(translatePercentage - 300) * 0.2}vw);`" 
-     alt="Fundo Contacto">
-</div>
+<section id="contato" class="w-screen h-screen flex-shrink-0 relative flex items-center justify-center px-6 md:px-20 bg-[#050505] overflow-hidden">
+                
+                <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+                    <img src="img/contato-photo_2560.jpg" 
+                         srcset="img/contato-photo_720.jpg 1280w, img/contato-photo_1080.jpg 1920w, img/contato-photo_1440.jpg 2560w"
+                         sizes="150vw"
+                         class="absolute top-0 w-[150vw] max-w-none h-full object-cover grayscale opacity-20 will-change-transform" 
+                         style="left: -25vw;"
+                         :style="`transform: translateX(${(translatePercentage - 300) * 0.2}vw);`" 
+                         alt="Fundo Contacto">
+                </div>
 
-<div class="relative z-10 text-center will-change-transform"
-     :style="`transform: translateX(${-(translatePercentage - 300) * 0.08}vw);`">
-    <h2 class="font-gilroy font-bold text-[clamp(2rem,6vw,6rem)] uppercase mb-10 leading-none text-white">
-        Vamos construir o<br><span class="text-[#ffc60a]">próximo quadro?</span>
-    </h2>
-    <a href="mailto:contato@edmadeira.com.br" class="font-gilroy font-bold text-xl border-b-2 border-[#ffc60a] pb-2 hover:opacity-60 transition-opacity">
-        contato@edmadeira.com
-    </a>
-</div>
-                </section>
+                <div x-data="{
+                        status: 'idle', // idle, loading, success, error
+                        formData: { nome: '', email: '', mensagem: '' },
+                        async enviarEmail() {
+                            this.status = 'loading';
+                            try {
+                                // Aponta para o arquivo PHP que você criará na Hostinger
+                                let response = await fetch('enviar.php', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify(this.formData)
+                                });
+                                if (response.ok) {
+                                    this.status = 'success';
+                                    this.formData = { nome: '', email: '', mensagem: '' }; // Limpa o form
+                                } else {
+                                    this.status = 'error';
+                                }
+                            } catch (err) {
+                                this.status = 'error';
+                            }
+                            // Retorna ao estado normal depois de 5 segundos
+                            setTimeout(() => { if(this.status !== 'idle') this.status = 'idle' }, 5000);
+                        }
+                     }"
+                     class="relative z-10 w-full max-w-6xl flex flex-col md:flex-row gap-12 md:gap-24 items-center">
+
+                    <div class="flex-1 text-center md:text-left will-change-transform"
+                         :style="`transform: translateX(${-(translatePercentage - 300) * 0.08}vw);`">
+                        <h2 class="font-gilroy font-bold text-[clamp(2.5rem,5vw,6rem)] uppercase leading-[0.9] text-white mb-6">
+                            Vamos construir o<br><span class="text-[#ffc60a]">próximo quadro?</span>
+                        </h2>
+                        <p class="font-serifa text-lg md:text-2xl text-gray-400 italic mb-8">
+                            Conte-nos sobre o seu projeto ou <br class="hidden md:block">
+                            <a href="mailto:contato@edmadeira.com" class="border-b border-white/20 hover:border-[#ffc60a] hover:text-[#ffc60a] transition-colors pb-1">envie um email direto</a>.
+                        </p>
+                    </div>
+
+                    <div class="w-full md:w-[450px] bg-black/40 backdrop-blur-md p-8 border border-white/10 will-change-transform"
+                         :style="`transform: translateX(${(translatePercentage - 300) * 0.08}vw);`">
+                        
+                        <form @submit.prevent="enviarEmail" class="flex flex-col gap-8">
+                            
+                            <div class="relative group">
+                                <input type="text" id="nome" x-model="formData.nome" required
+                                       class="w-full bg-transparent border-b border-white/20 text-white text-lg font-serifa italic py-2 focus:outline-none focus:border-[#ffc60a] transition-colors peer placeholder-transparent" 
+                                       placeholder="Nome">
+                                <label for="nome" class="absolute left-0 -top-4 text-[10px] font-gilroy font-bold uppercase tracking-[0.2em] text-[#ffc60a] transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-white/50 peer-placeholder-shown:top-2 peer-placeholder-shown:font-serifa peer-placeholder-shown:italic peer-placeholder-shown:tracking-normal peer-focus:-top-4 peer-focus:text-[10px] peer-focus:font-gilroy peer-focus:text-[#ffc60a] peer-focus:not-italic peer-focus:tracking-[0.2em]">Nome</label>
+                            </div>
+
+                            <div class="relative group">
+                                <input type="email" id="email" x-model="formData.email" required
+                                       class="w-full bg-transparent border-b border-white/20 text-white text-lg font-serifa italic py-2 focus:outline-none focus:border-[#ffc60a] transition-colors peer placeholder-transparent" 
+                                       placeholder="Email">
+                                <label for="email" class="absolute left-0 -top-4 text-[10px] font-gilroy font-bold uppercase tracking-[0.2em] text-[#ffc60a] transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-white/50 peer-placeholder-shown:top-2 peer-placeholder-shown:font-serifa peer-placeholder-shown:italic peer-placeholder-shown:tracking-normal peer-focus:-top-4 peer-focus:text-[10px] peer-focus:font-gilroy peer-focus:text-[#ffc60a] peer-focus:not-italic peer-focus:tracking-[0.2em]">Email</label>
+                            </div>
+
+                            <div class="relative group">
+                                <textarea id="mensagem" x-model="formData.mensagem" required rows="3"
+                                          class="w-full bg-transparent border-b border-white/20 text-white text-lg font-serifa italic py-2 focus:outline-none focus:border-[#ffc60a] transition-colors peer placeholder-transparent resize-none" 
+                                          placeholder="Mensagem"></textarea>
+                                <label for="mensagem" class="absolute left-0 -top-4 text-[10px] font-gilroy font-bold uppercase tracking-[0.2em] text-[#ffc60a] transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-white/50 peer-placeholder-shown:top-2 peer-placeholder-shown:font-serifa peer-placeholder-shown:italic peer-placeholder-shown:tracking-normal peer-focus:-top-4 peer-focus:text-[10px] peer-focus:font-gilroy peer-focus:text-[#ffc60a] peer-focus:not-italic peer-focus:tracking-[0.2em]">Sua Mensagem</label>
+                            </div>
+
+                            <div class="mt-4 flex flex-col items-start gap-3">
+                                <button type="submit" :disabled="status === 'loading'"
+                                        class="font-gilroy font-bold text-xs tracking-[0.3em] uppercase text-[#ffc60a] border border-[#ffc60a] px-8 py-4 hover:bg-[#ffc60a] hover:text-black transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto text-center">
+                                    <span x-show="status === 'idle'">Enviar Mensagem</span>
+                                    <span x-show="status === 'loading'" class="animate-pulse">Enviando...</span>
+                                    <span x-show="status === 'success'">Mensagem Enviada!</span>
+                                    <span x-show="status === 'error'">Tentar Novamente</span>
+                                </button>
+                                
+                                <p x-show="status === 'success'" class="font-serifa italic text-green-400 text-sm mt-2" x-transition>Obrigado! Retornaremos em breve.</p>
+                                <p x-show="status === 'error'" class="font-serifa italic text-red-400 text-sm mt-2" x-transition>Houve um erro com o servidor. Tente novamente.</p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
 
             </div>
         </div>
@@ -398,7 +467,7 @@
                 <div class="flex-1">
                     <h3 class="font-gilroy font-bold text-[#ffc60a] text-lg md:text-xl uppercase tracking-widest mb-3" x-text="titulo"></h3>
                     <p x-show="cliente"><span class="font-gilroy font-bold text-white/90">Cliente:</span> <span class="font-serifa" x-text="cliente"></span></p>
-					
+                    
                     <p x-show="descricao" 
                        class="font-serifa text-base md:text-lg italic text-white/80 leading-relaxed border-t border-white/10 pt-3" 
                        x-text="descricao"></p>
