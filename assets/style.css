@@ -1,92 +1,544 @@
-/* Alpine.js - esconde elementos antes de inicializar */
-[x-cloak] { display: none !important; }
-@font-face {
-    font-family: 'Gilroy';
-    src: url('./fonts/Gilroy-Bold.woff2') format('woff2');
-    font-weight: bold;
-}
-@font-face {
-    font-family: 'Gilroy';
-    src: url('./fonts/Gilroy-Light.woff2') format('woff2');
-    font-weight: 300; /* 300 é o padrão para Light */
-}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EdMADEIRA | Filmes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+	
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style.css">
+</head>
 
-.font-gilroy { font-family: 'Gilroy', sans-serif; }
-.font-serifa { font-family: 'Cormorant Garamond', serif; }
-
-/* Animação do Preloader */
-@keyframes loadingBar {
-    0% { width: 0%; left: 0%; }
-    50% { width: 100%; left: 0%; }
-    100% { width: 0%; left: 100%; }
-}
-
-.animate-loading-bar {
-    animation: loadingBar 1.5s infinite ease-in-out;
-}
-
-/* Oculta a barra de rolagem do carrossel no Mobile, mas mantém a funcionalidade de deslizar */
-.hide-scroll {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-}
-.hide-scroll::-webkit-scrollbar {
-    display: none; /* Chrome, Safari and Opera */
-}
-
-/* Ativa o Snap no contentor de scroll (o corpo ou o main) */
-html {
-    scroll-snap-type: y mandatory;
-}
-
-/* Smooth scroll apenas no Desktop */
-@media (min-width: 1024px) {
-    html {
-        scroll-behavior: smooth;
+<body x-data="{ 
+    scrollPos: 0,
+    maxScroll: 0,
+    mobileMenuOpen: false,
+    init() {
+        this.$nextTick(() => { this.maxScroll = document.documentElement.scrollHeight - window.innerHeight; });
+        window.addEventListener('resize', () => { this.maxScroll = document.documentElement.scrollHeight - window.innerHeight; });
+        window.addEventListener('scroll', () => { this.scrollPos = window.pageYOffset; });
+    },
+    get translatePercentage() {
+        if (this.maxScroll === 0) return 0;
+        let ratio = this.scrollPos / this.maxScroll;
+        ratio = Math.max(0, Math.min(ratio, 1));
+        return ratio * 300; 
+    },
+    get currentSection() {
+        if (window.innerHeight === 0) return 0;
+        return Math.round(this.scrollPos / window.innerHeight);
+    },
+    /* Motor de salto infalível que protege a estrutura do HTML */
+    scrollToSection(index) {
+        const destino = window.innerHeight * index;
+        const isMobile = window.matchMedia('(max-width: 767px)').matches;
+        
+        if (isMobile) {
+            document.documentElement.style.scrollSnapType = 'none';
+            window.scrollTo(0, destino);
+            setTimeout(() => { document.documentElement.style.scrollSnapType = ''; }, 50);
+        } else {
+            window.scrollTo({ top: destino, behavior: 'smooth' });
+        }
     }
-}
+}" class="bg-black text-white overflow-x-hidden overscroll-y-none m-0 p-0 font-sans">
+    
+    <div x-data="{ loading: true }" 
+         x-init="window.addEventListener('load', () => { setTimeout(() => loading = false, 1200) })"
+         x-show="loading" 
+         x-transition:leave="transition ease-in-out duration-1000"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         class="fixed inset-0 z-[99999] bg-black flex flex-col items-center justify-center pointer-events-none">
+         
+         <div class="text-3xl md:text-5xl tracking-tighter flex items-baseline animate-pulse">
+            <span class="font-gilroy font-bold text-white">E</span>
+            <span class="font-gilroy font-bold text-[#ffc60a]">d</span>
+            <span class="font-gilroy font-light uppercase text-white">MADEIRA</span>
+            <span class="font-gilroy font-bold text-[#ffc60a]">.</span>
+         </div>
+        
+        <div class="w-32 h-[1px] bg-white/10 mt-8 relative overflow-hidden">
+            <div class="absolute top-0 left-0 h-full bg-[#ffc60a] animate-loading-bar"></div>
+        </div>
+    </div>
+    
+    <nav class="fixed top-0 w-full z-[100] flex justify-between items-center p-8 md:p-10 mix-blend-difference pointer-events-none">
+         
+        <a href="#hero" 
+           @click.prevent="scrollToSection(0); mobileMenuOpen = false" 
+           class="text-2xl tracking-tighter pointer-events-auto flex items-baseline">
+            <span class="font-gilroy font-bold text-white">E</span>
+            <span class="font-gilroy font-bold text-[#ffc60a]">d</span>
+            <span class="font-gilroy font-light uppercase text-white">MADEIRA</span>
+            <span class="font-gilroy font-bold text-[#ffc60a]">.</span>
+        </a>
 
-/* Define onde cada 'paragem' deve acontecer */
-.section-snap-point {
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-    height: 100vh;  /* 1. Plano B: Para o Dreamweaver não reclamar e para navegadores muito antigos */
-    height: 100dvh; /* 2. Plano A: Navegadores modernos de celular usam esta linha e ignoram a de cima */
-    width: 100%;
-}
+        <div class="hidden md:flex space-x-8 font-gilroy font-bold text-[10px] tracking-[0.4em] uppercase opacity-70 pointer-events-auto">
+            <a href="#portfolio" @click.prevent="scrollToSection(1)" :class="currentSection === 1 ? 'text-[#ffc60a] opacity-100' : 'text-white hover:text-[#ffc60a] transition-colors'">Portfólio</a>
+            <a href="#sobre" @click.prevent="scrollToSection(2)" :class="currentSection === 2 ? 'text-[#ffc60a] opacity-100' : 'text-white hover:text-[#ffc60a] transition-colors'">Sobre</a>
+            <a href="#contato" @click.prevent="scrollToSection(3)" :class="currentSection === 3 ? 'text-[#ffc60a] opacity-100' : 'text-white hover:text-[#ffc60a] transition-colors'">Contato</a>
+        </div>    
+        
+        <button @click="mobileMenuOpen = true" class="md:hidden pointer-events-auto text-white p-2">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 8h16M4 16h16"></path>
+            </svg>
+        </button>
+        
+    </nav>
 
-/* Animação da Seta do Portfólio */
-@keyframes bounceHorizontal {
-    0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(10px); }
-}
-.animate-bounce-horizontal {
-    animation: bounceHorizontal 1.5s infinite ease-in-out;
-}
+	<div x-show="mobileMenuOpen" 
+         x-transition:enter="transition ease-out duration-500"
+         x-transition:enter-start="translate-x-full"
+         x-transition:enter-end="translate-x-0"
+         x-transition:leave="transition ease-in duration-400"
+         x-transition:leave-start="translate-x-0"
+         x-transition:leave-end="translate-x-full"
+         class="fixed inset-0 z-[999999] bg-black flex flex-col p-10 justify-center"
+         style="display: none;">
+        
+        <button @click="mobileMenuOpen = false" class="absolute top-10 right-8 text-white group flex items-center gap-2">
+            <span class="font-gilroy text-[10px] tracking-[0.3em] uppercase opacity-50">Fechar</span>
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
 
-/* MATRIZ DE PORTFÓLIO (Mobile 4xN | Desktop 2xN) */
-.portfolio-matrix {
-    display: grid !important;
-    grid-auto-flow: column !important;
-    overflow-x: auto !important;
-    scroll-snap-type: x mandatory !important;
-    -webkit-overflow-scrolling: touch;
-    align-content: end !important; /* Trava tudo pela base no Desktop */
-}
+        <div class="flex flex-col space-y-8 font-gilroy font-bold text-4xl uppercase tracking-tighter">
+            <a href="#portfolio" 
+               @click.prevent="mobileMenuOpen = false; setTimeout(() => scrollToSection(1), 100)" 
+               :class="currentSection === 1 ? 'text-[#ffc60a]' : 'text-white'">Portfólio</a>
+            
+            <a href="#sobre" 
+               @click.prevent="mobileMenuOpen = false; setTimeout(() => scrollToSection(2), 100)" 
+               :class="currentSection === 2 ? 'text-[#ffc60a]' : 'text-white'">Sobre</a>
+            
+            <a href="#contato" 
+               @click.prevent="mobileMenuOpen = false; setTimeout(() => scrollToSection(3), 100)" 
+               :class="currentSection === 3 ? 'text-[#ffc60a]' : 'text-white'">Contato</a>
+        </div>
 
-/* Configuração Mobile (4 linhas) */
-@media (max-width: 767px) {
-    .portfolio-matrix {
-        grid-template-rows: repeat(4, max-content) !important;
-        gap: 12px !important;
-        padding-bottom: 16px;
-    }
-}
+        <div class="absolute bottom-10 left-10">
+            <p class="font-gilroy text-[10px] tracking-[0.4em] uppercase text-white/30">EdMADEIRA Filmes © 2026</p>
+        </div>
+    </div>
+	
+    <main class="h-[400dvh] relative">
+		<div class="absolute inset-0 z-0">
+        <div class="section-snap-point"></div> <div class="section-snap-point"></div> <div class="section-snap-point"></div> <div class="section-snap-point"></div> </div>
+       
+		<div class="sticky top-0 h-screen w-full overflow-hidden bg-black z-10">
+            <div class="flex h-full w-[400vw] will-change-transform" 
+                 :style="`transform: translateX(-${translatePercentage}vw);`"
+                 style="transition: transform 0.1s ease-out;">
+                
+                <section class="w-screen h-screen flex-shrink-0 relative flex flex-col items-center justify-center border-r border-white/5">
+                  <!--  <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover z-0 opacity-40 grayscale">
+                        <source src="img/edmadeira_01.webm" type="video/webm">
+                        <source src="img/edmadeira_01.mp4" type="video/mp4">
+                    </video>
+                    -->
+<div class="absolute inset-0 z-0 overflow-hidden pointer-events-none grayscale opacity-40 flex items-center justify-center">
+    
+    <iframe src="https://player.vimeo.com/video/1076422237?background=1" 
+            frameborder="0" 
+            allow="autoplay; fullscreen" 
+            class="absolute max-w-none scale-125"
+            style="width: max(100vw, 177.78vh); height: max(100vh, 56.25vw);">
+    </iframe>
 
-/* Configuração Desktop (2 linhas) */
-@media (min-width: 768px) {
-    .portfolio-matrix {
-        grid-template-rows: repeat(2, max-content) !important;
-        gap: 24px !important;
-    }
-}
+</div>
+					
+				
+                    <div class="relative z-10 text-center flex flex-col items-center px-4 will-change-transform"
+     :style="`opacity: ${1 - (scrollPos / 500)}; transform: translateY(-${scrollPos * 0.4}px);`">
+    <img src="img/logo_edmadeira.png" alt="Logo EdMadeira" class="w-32 md:w-48 mb-8 drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+    <h1 class="font-gilroy font-bold text-[clamp(3rem,8vw,8rem)] uppercase leading-[0.9] tracking-tighter">
+        Precisão em<br>Moviment<span class="text-[#ffc60a]">o.</span>
+    </h1>
+    <p class="font-serifa italic text-lg md:text-2xl text-gray-400 mt-6 max-w-2xl mx-auto">
+        Excelência em cada quadro. <br class="md:hidden"> Produção audiovisual boutique.
+    </p>
+</div>
+
+                    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center space-y-2 opacity-50 z-10">
+                        <span class="font-gilroy font-bold text-[10px] tracking-[0.3em] uppercase">Scroll</span>
+                        <div class="w-[1px] h-12 bg-gradient-to-b from-[#ffc60a] to-transparent"></div>
+                    </div>
+                </section>
+				
+<section id="portfolio" 
+         x-data="{ 
+            canScrollRight: true,
+            checkScroll(el) {
+                this.canScrollRight = (el.scrollWidth - el.clientWidth - 30) > el.scrollLeft;
+            }
+         }"
+         class="w-screen h-screen flex-shrink-0 relative flex flex-col px-6 md:px-20 pt-24 md:pt-32 pb-8 md:pb-16 border-r border-white/5 bg-[#050505] overflow-hidden">
+    
+    <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <img src="img/entrega-photo_1440.jpg" 
+             srcset="img/entrega-photo_720.jpg 1280w, img/entrega-photo_1080.jpg 1920w, img/entrega-photo_1440.jpg 2560w"
+             sizes="150vw"
+             class="absolute top-0 w-[150vw] max-w-none h-full object-cover grayscale opacity-20" 
+             style="left: -25vw;"
+             :style="`transform: translateX(${(translatePercentage - 100) * 0.2}vw);`" alt="Fundo">
+    </div>
+
+    <div class="relative z-10 mb-6 md:mb-0 md:transition-all md:duration-1000 md:ease-out"
+         :class="currentSection >= 1 ? 'md:opacity-100 md:translate-y-0' : 'md:opacity-0 md:translate-y-12'">
+        <h2 class="font-gilroy font-bold text-3xl md:text-4xl uppercase text-white">Trabalhos Selecionados</h2>
+        <div class="w-12 h-[2px] bg-[#ffc60a] mt-4"></div>
+    </div>
+    
+    <div class="relative flex-1 min-h-0 z-20 flex items-center">
+        <div x-show="canScrollRight" class="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-30 pointer-events-none bg-gradient-to-l from-[#050505] to-transparent h-full w-32 items-center justify-end pr-4">
+            <div class="animate-bounce-horizontal text-[#ffc60a]">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+            </div>
+        </div>
+
+        <div @scroll="checkScroll($el)" x-init="setTimeout(() => checkScroll($el), 500)" 
+             class="w-full portfolio-matrix hide-scroll py-4">
+            
+            <div @click="$dispatch('open-video', { id: '922911289', titulo: 'AZEITE SABIÁ (2023)', descricao: 'Mini documentário contando um pouco sobre o plantio, colheita e fabricação do Azeite Sabiá.', cliente: 'Azeite Sabiá', filmmaker: 'Freddy Leal', edicao_som_mixagem: 'Guilherme Schwenck' })" 
+                 :class="currentSection >= 1 ? 'md:opacity-100 md:translate-y-0 md:scale-100' : 'md:opacity-0 md:translate-y-16 md:scale-95'"
+                 style="transition-delay: 50ms;"
+                 class="w-40 md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 shrink-0 snap-start md:transition-all md:duration-700 md:ease-out">
+                <img src="img/thumb-sabia_2023.jpg" alt="Thumb Azeite Sabiá" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+                <div class="absolute bottom-2 left-2 z-10"><h4 class="font-gilroy font-bold uppercase tracking-widest text-[8px] md:text-[10px] text-white">Azeite Sabiá</h4></div>
+            </div>
+
+            <div @click="$dispatch('open-video', { id: '1086753978', titulo: 'EQUIPE CIDADÃ (2025)', descricao: 'Episódio da série &quot;Equipe Cidadã&quot;, desenvolvida para o Sistema Campo Limpo e veiculada em escolas de todo o país.', cliente: 'inPEV', direcao: 'Freddy Leal', producao: 'Erick Florentino', animacao: 'eFrame', captacao_som: 'Mandril Áudio', edicao_som_mixagem: 'Guilherme Schwenck' })" 
+                 :class="currentSection >= 1 ? 'md:opacity-100 md:translate-y-0 md:scale-100' : 'md:opacity-0 md:translate-y-16 md:scale-95'"
+                 style="transition-delay: 100ms;"
+                 class="w-40 md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 shrink-0 snap-start md:transition-all md:duration-700 md:ease-out">
+                <img src="img/thumb-equipe.jpg" alt="Thumb inPEV - Equipe Cidadã (2025)" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+                <div class="absolute bottom-2 left-2 z-10"><h4 class="font-gilroy font-bold uppercase tracking-widest text-[8px] md:text-[10px] text-white">inPEV</h4></div>
+            </div>
+
+            <div @click="$dispatch('open-video', { id: '1183007018', titulo: 'OPUS: BRUNA AMARO', descricao: 'Episódio piloto de série documental sobre jovens artistas e suas produções.', cliente: '', direcao: '', edicao_som_mixagem: 'Guilherme Schwenck' })" 
+                 :class="currentSection >= 1 ? 'md:opacity-100 md:translate-y-0 md:scale-100' : 'md:opacity-0 md:translate-y-16 md:scale-95'"
+                 style="transition-delay: 150ms;"
+                 class="w-40 md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 shrink-0 snap-start md:transition-all md:duration-700 md:ease-out">
+                <img src="img/thumb-opus-bruna.jpg" alt="Thumb Opus: Bruna Amaro" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+                <div class="absolute bottom-2 left-2 z-10"><h4 class="font-gilroy font-bold uppercase tracking-widest text-[8px] md:text-[10px] text-white">Opus: Bruna Amaro</h4></div>
+            </div>
+
+            <div @click="$dispatch('open-video', { id: '1183011633', titulo: 'INSTITUCIONAL 2026', descricao: 'Vídeo Institucional apresentando o caderno e as atividades educacionais desenvolvidas pelo Sistema Campo Limpo para o ano de 2026', cliente: 'Sistema Campo Limpo', filmmaker: 'Freddy Leal' })" 
+                 :class="currentSection >= 1 ? 'md:opacity-100 md:translate-y-0 md:scale-100' : 'md:opacity-0 md:translate-y-16 md:scale-95'"
+                 style="transition-delay: 200ms;"
+                 class="w-40 md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 shrink-0 snap-start md:transition-all md:duration-700 md:ease-out">
+                <img src="img/thumb-inpev2026.jpg" alt="Thumb Sistema Campo Limpo" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+                <div class="absolute bottom-2 left-2 z-10"><h4 class="font-gilroy font-bold uppercase tracking-widest text-[8px] md:text-[10px] text-white">Sistema Campo Limpo</h4></div>
+            </div>
+
+            <div @click="$dispatch('open-video', { id: '922954285', titulo: 'LA PASTINA - ROM', descricao: 'Filme para Instagram para o evento da La Pastina no salão ROM.', cliente: 'La Pastina', direcao: '' })" 
+                 :class="currentSection >= 1 ? 'md:opacity-100 md:translate-y-0 md:scale-100' : 'md:opacity-0 md:translate-y-16 md:scale-95'"
+                 style="transition-delay: 250ms;"
+                 class="w-40 md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 shrink-0 snap-start md:transition-all md:duration-700 md:ease-out">
+                <img src="img/thumb-lapastina.jpg" alt="Thumb La Pastina - ROM" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+                <div class="absolute bottom-2 left-2 z-10"><h4 class="font-gilroy font-bold uppercase tracking-widest text-[8px] md:text-[10px] text-white">La Pastina</h4></div>
+            </div>
+
+            <div @click="$dispatch('open-video', { id: '922961824', titulo: 'COLETIVO RESISTIR E EXISTIR: UMA EXPERIÊNCIA DE EDUCAÇÃO PARA A DIVERSIDADE', descricao: 'Mini documentário produzido para o CENPEC sobre o Coletivo Resistir e Existir (CRE), matéria eletiva de educação antirracista da E.E. Alberto Torres em São Paulo.', cliente: '', direcao: '' })" 
+                 :class="currentSection >= 1 ? 'md:opacity-100 md:translate-y-0 md:scale-100' : 'md:opacity-0 md:translate-y-16 md:scale-95'"
+                 style="transition-delay: 300ms;"
+                 class="w-40 md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 shrink-0 snap-start md:transition-all md:duration-700 md:ease-out">
+                <img src="img/thumb-coletivo.jpg" alt="Thumb Coletivo Resistir e Existir" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+                <div class="absolute bottom-2 left-2 z-10"><h4 class="font-gilroy font-bold uppercase tracking-widest text-[8px] md:text-[10px] text-white">Coletivo Resistir e Existir</h4></div>
+            </div>
+
+            <div @click="$dispatch('open-video', { id: '1116215827', titulo: 'VISITAR É SENTIR', descricao: 'Filme publicitário com veiculação em TV aberta.', cliente: 'Azeite Sabiá', filmmaker: 'Freddy Leal', assistente_audio: 'Guilherme Schwenck' })" 
+                 :class="currentSection >= 1 ? 'md:opacity-100 md:translate-y-0 md:scale-100' : 'md:opacity-0 md:translate-y-16 md:scale-95'"
+                 style="transition-delay: 350ms;"
+                 class="w-40 md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 shrink-0 snap-start md:transition-all md:duration-700 md:ease-out">
+                <img src="img/thumb-sabia.jpg"  alt="Thumb Azeite Sabiá - Visitar é Sentir" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+                <div class="absolute bottom-2 left-2 z-10"><h4 class="font-gilroy font-bold uppercase tracking-widest text-[8px] md:text-[10px] text-white">Azeite Sabiá</h4></div>
+            </div>
+
+            <div @click="$dispatch('open-video', { id: '922926408', titulo: '34ª BIENAL DE SÃO PAULO', descricao: 'Filme promocional para a 34ª Bienal de São Paulo.', cliente: 'Bienal de São Paulo', direcao: '' })" 
+                 :class="currentSection >= 1 ? 'md:opacity-100 md:translate-y-0 md:scale-100' : 'md:opacity-0 md:translate-y-16 md:scale-95'"
+                 style="transition-delay: 400ms;"
+                 class="w-40 md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 shrink-0 snap-start md:transition-all md:duration-700 md:ease-out">
+                <img src="img/thumb-34bienal.jpg" alt="Thumb 34ª Bienal de São Paulo" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+                <div class="absolute bottom-2 left-2 z-10"><h4 class="font-gilroy font-bold uppercase tracking-widest text-[8px] md:text-[10px] text-white">34ª Bienal de São Paulo</h4></div>
+            </div>
+
+            <div @click="$dispatch('open-video', { id: '231974161', titulo: 'LARA AUFRANC - PASSAGEM', descricao: 'Videoclipe para a música &quot;Passagem&quot;, de Lara Aufranc.', cliente: '', direcao: 'Freddy Leal' })" 
+                 :class="currentSection >= 1 ? 'md:opacity-100 md:translate-y-0 md:scale-100' : 'md:opacity-0 md:translate-y-16 md:scale-95'"
+                 style="transition-delay: 450ms;"
+                 class="w-40 md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 shrink-0 snap-start md:transition-all md:duration-700 md:ease-out">
+                <img src="img/thumb-passagem.jpg" alt="Thumb Lara Aufranc - Passagem" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+                <div class="absolute bottom-2 left-2 z-10"><h4 class="font-gilroy font-bold uppercase tracking-widest text-[8px] md:text-[10px] text-white">Lara Aufranc - Passagem</h4></div>
+            </div>
+
+            <div @click="$dispatch('open-video', { id: '220119815', titulo: 'NO TOBACCO DAY - FRENCH', descricao: 'Filme publicitário feito em 6 idiomas (inglês, francês, espanhol, chinês, árabe e russo) e veiculado em mais de 100 países.', cliente: '', direcao: '' })" 
+                 :class="currentSection >= 1 ? 'md:opacity-100 md:translate-y-0 md:scale-100' : 'md:opacity-0 md:translate-y-16 md:scale-95'"
+                 style="transition-delay: 500ms;"
+                 class="w-40 md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 shrink-0 snap-start md:transition-all md:duration-700 md:ease-out">
+                <img src="img/thumb-tabaco.jpg" alt="Thumb World Health Organization: No Tobacco Day" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+                <div class="absolute bottom-2 left-2 z-10"><h4 class="font-gilroy font-bold uppercase tracking-widest text-[8px] md:text-[10px] text-white">World Health Organization</h4></div>
+            </div>
+
+            <div @click="$dispatch('open-video', { id: '552853519', titulo: 'MUNDO MAKER - TEASER', cliente: 'Mundo Maker', descricao: '', direcao: 'Freddy Leal', producao: 'Erick Fiorentino', captacao_som: 'Guilherme Schwenck' })" 
+                 :class="currentSection >= 1 ? 'md:opacity-100 md:translate-y-0 md:scale-100' : 'md:opacity-0 md:translate-y-16 md:scale-95'"
+                 style="transition-delay: 550ms;"
+                 class="w-40 md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 shrink-0 snap-start md:transition-all md:duration-700 md:ease-out">
+                <img src="img/thumb-mundomaker.jpg" alt="Thumb Mundo Maker" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+                <div class="absolute bottom-2 left-2 z-10"><h4 class="font-gilroy font-bold uppercase tracking-widest text-[8px] md:text-[10px] text-white">Mundo Maker</h4></div>
+            </div>
+
+            <div @click="$dispatch('open-video', { id: '922946593', titulo: 'TARÔ DOS ANJOS', descricao: 'Filme promocional para a coleção &quot;Tarô dos Anjos&quot;, do estilista Alexandre dos Anjos.', cliente: '', direcao: 'Laura Artigas', assistente_direcao: 'Freddy Leal'})" 
+                 :class="currentSection >= 1 ? 'md:opacity-100 md:translate-y-0 md:scale-100' : 'md:opacity-0 md:translate-y-16 md:scale-95'"
+                 style="transition-delay: 600ms;"
+                 class="w-40 md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 shrink-0 snap-start md:transition-all md:duration-700 md:ease-out">
+                <img src="img/thumb-taro-dos-anjos.jpg" alt="Thumb Alexandre dos Anjos - Tarô dos Anjos" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
+                <div class="absolute bottom-2 left-2 z-10"><h4 class="font-gilroy font-bold uppercase tracking-widest text-[8px] md:text-[10px] text-white">Alexandre dos Anjos</h4></div>
+            </div>
+
+            <a href="https://vimeo.com/edmadeira" target="_blank" 
+               :class="currentSection >= 1 ? 'md:opacity-100 md:translate-y-0 md:scale-100' : 'md:opacity-0 md:translate-y-16 md:scale-95'"
+               style="transition-delay: 650ms;"
+               class="w-40 md:w-80 aspect-video flex flex-col items-center justify-center border border-white/10 hover:border-[#ffc60a] md:transition-all md:duration-700 md:ease-out group shrink-0 snap-start bg-black/50 backdrop-blur-sm md:row-start-2">
+                <span class="font-gilroy font-bold text-[8px] md:text-[10px] tracking-[0.2em] uppercase text-gray-400 group-hover:text-[#ffc60a]">Ver todos</span>
+                <span class="font-gilroy font-bold text-sm md:text-xl uppercase mt-1 text-white">Vimeo</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+                <section id="sobre" class="w-screen h-screen flex-shrink-0 relative flex items-center justify-center border-r border-white/5">
+ <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+<img src="img/sobre-photo_2560.jpg" 
+     srcset="img/sobre-photo_720.jpg 1280w,
+             img/sobre-photo_1080.jpg 1920w,
+             img/sobre-photo_1440.jpg 2560w"
+     sizes="150vw"
+     class="absolute top-0 w-[150vw] max-w-none h-full object-cover grayscale opacity-30 will-change-transform" 
+     style="left: -25vw;"
+     :style="`transform: translateX(${(translatePercentage - 200) * 0.2}vw);`" 
+     alt="Fundo Sobre">
+</div>
+
+<div class="relative z-10 text-center max-w-4xl px-8 will-change-transform"
+     :style="`transform: translateX(${-(translatePercentage - 200) * 0.08}vw);` text-center">
+    
+    <h2 class="font-gilroy font-bold text-3xl md:text-7xl uppercase mb-8 text-white leading-tight">
+        Experiência e <br class="md:hidden"> Renovação
+    </h2>
+    
+    <p class="font-serifa text-base md:text-4xl italic text-gray-300 leading-relaxed">
+        Unimos a bagagem de profissionais experientes à energia de novos talentos. Acreditamos no cuidado artesanal de cada frame para entregar resultados que comunicam com clareza e impacto.
+    </p>
+</div>
+                </section>
+
+<section id="contato" class="w-screen h-screen flex-shrink-0 relative flex items-center justify-center px-6 md:px-20 bg-[#050505] overflow-hidden">
+                
+                <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+                    <img src="img/contato-photo_2560.jpg" 
+                         srcset="img/contato-photo_720.jpg 1280w, img/contato-photo_1080.jpg 1920w, img/contato-photo_1440.jpg 2560w"
+                         sizes="150vw"
+                         class="absolute top-0 w-[150vw] max-w-none h-full object-cover grayscale opacity-20 will-change-transform" 
+                         style="left: -25vw;"
+                         :style="`transform: translateX(${(translatePercentage - 300) * 0.2}vw);`" 
+                         alt="Fundo Contacto">
+                </div>
+
+                <div x-data="{
+                        status: 'idle', // idle, loading, success, error
+                        formData: { nome: '', email: '', mensagem: '' },
+                        async enviarEmail() {
+                            this.status = 'loading';
+                            try {
+                                let response = await fetch('enviar.php', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify(this.formData)
+                                });
+                                if (response.ok) {
+                                    this.status = 'success';
+                                    this.formData = { nome: '', email: '', mensagem: '' }; 
+                                } else {
+                                    this.status = 'error';
+                                }
+                            } catch (err) {
+                                this.status = 'error';
+                            }
+                            setTimeout(() => { if(this.status !== 'idle') this.status = 'idle' }, 5000);
+                        }
+                     }"
+                     class="relative z-10 w-full max-w-6xl flex flex-col md:flex-row gap-6 md:gap-24 items-center mt-12 md:mt-0"> 
+
+                    <div class="flex-1 text-center md:text-left will-change-transform"
+                         :style="`transform: translateX(${-(translatePercentage - 300) * 0.08}vw);`">
+                        
+                        <div class="opacity-100 md:transition-all md:duration-1000 md:ease-out"
+                             :class="currentSection >= 3 ? 'md:opacity-100 md:translate-y-0' : 'md:opacity-0 md:translate-y-12'">
+                            <h2 class="font-gilroy font-bold text-[clamp(1.8rem,5vw,6rem)] uppercase leading-[0.9] text-white mb-3 md:mb-6">
+                                Vamos construir o<br><span class="text-[#ffc60a]">próximo quadro?</span>
+                            </h2>
+                        </div>
+
+                        <div class="opacity-100 md:transition-all md:duration-1000 md:ease-out" style="transition-delay: 200ms;"
+                             :class="currentSection >= 3 ? 'md:opacity-100 md:translate-y-0' : 'md:opacity-0 md:translate-y-12'">
+                            <p class="font-serifa text-base md:text-2xl text-gray-400 italic mb-4 md:mb-8">
+                                Conte-nos sobre o seu projeto ou <br class="hidden md:block">
+                                <a href="mailto:contato@edmadeira.com" class="border-b border-white/20 hover:border-[#ffc60a] hover:text-[#ffc60a] transition-colors pb-1">envie um email direto</a>.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="w-full max-w-sm md:max-w-none md:w-[450px] mx-auto md:mx-0 will-change-transform"
+                         :style="`transform: translateX(${(translatePercentage - 300) * 0.08}vw);`">
+                        
+                        <div class="bg-black/40 backdrop-blur-md p-5 md:p-8 border border-white/10 opacity-100 md:transition-all md:duration-1000 md:ease-out"
+                             style="transition-delay: 400ms;"
+                             :class="currentSection >= 3 ? 'md:opacity-100 md:translate-y-0 md:scale-100' : 'md:opacity-0 md:translate-y-16 md:scale-95'">
+                            
+                            <form @submit.prevent="enviarEmail" class="flex flex-col gap-4 md:gap-8">
+                                
+                                <div class="relative group mt-2 md:mt-0">
+                                    <input type="text" id="nome" x-model="formData.nome" required
+                                           class="w-full bg-transparent border-b border-white/20 text-white text-sm md:text-lg font-serifa italic py-1 md:py-2 focus:outline-none focus:border-[#ffc60a] transition-colors peer placeholder-transparent" 
+                                           placeholder="Nome">
+                                    <label for="nome" class="absolute left-0 -top-4 text-[9px] md:text-[10px] font-gilroy font-bold uppercase tracking-[0.2em] text-[#ffc60a] transition-all peer-placeholder-shown:text-sm md:peer-placeholder-shown:text-base peer-placeholder-shown:text-white/50 peer-placeholder-shown:top-1 md:peer-placeholder-shown:top-2 peer-placeholder-shown:font-serifa peer-placeholder-shown:italic peer-placeholder-shown:tracking-normal peer-focus:-top-4 peer-focus:text-[9px] md:peer-focus:text-[10px] peer-focus:font-gilroy peer-focus:text-[#ffc60a] peer-focus:not-italic peer-focus:tracking-[0.2em]">Nome</label>
+                                </div>
+
+                                <div class="relative group mt-2 md:mt-0">
+                                    <input type="email" id="email" x-model="formData.email" required
+                                           class="w-full bg-transparent border-b border-white/20 text-white text-sm md:text-lg font-serifa italic py-1 md:py-2 focus:outline-none focus:border-[#ffc60a] transition-colors peer placeholder-transparent" 
+                                           placeholder="Email">
+                                    <label for="email" class="absolute left-0 -top-4 text-[9px] md:text-[10px] font-gilroy font-bold uppercase tracking-[0.2em] text-[#ffc60a] transition-all peer-placeholder-shown:text-sm md:peer-placeholder-shown:text-base peer-placeholder-shown:text-white/50 peer-placeholder-shown:top-1 md:peer-placeholder-shown:top-2 peer-placeholder-shown:font-serifa peer-placeholder-shown:italic peer-placeholder-shown:tracking-normal peer-focus:-top-4 peer-focus:text-[9px] md:peer-focus:text-[10px] peer-focus:font-gilroy peer-focus:text-[#ffc60a] peer-focus:not-italic peer-focus:tracking-[0.2em]">Email</label>
+                                </div>
+
+                                <div class="relative group mt-2 md:mt-0">
+                                    <textarea id="mensagem" x-model="formData.mensagem" required rows="2"
+                                              class="w-full bg-transparent border-b border-white/20 text-white text-sm md:text-lg font-serifa italic py-1 md:py-2 focus:outline-none focus:border-[#ffc60a] transition-colors peer placeholder-transparent resize-none md:rows-3" 
+                                              placeholder="Mensagem"></textarea>
+                                    <label for="mensagem" class="absolute left-0 -top-4 text-[9px] md:text-[10px] font-gilroy font-bold uppercase tracking-[0.2em] text-[#ffc60a] transition-all peer-placeholder-shown:text-sm md:peer-placeholder-shown:text-base peer-placeholder-shown:text-white/50 peer-placeholder-shown:top-1 md:peer-placeholder-shown:top-2 peer-placeholder-shown:font-serifa peer-placeholder-shown:italic peer-placeholder-shown:tracking-normal peer-focus:-top-4 peer-focus:text-[9px] md:peer-focus:text-[10px] peer-focus:font-gilroy peer-focus:text-[#ffc60a] peer-focus:not-italic peer-focus:tracking-[0.2em]">Sua Mensagem</label>
+                                </div>
+
+                                <div class="mt-2 md:mt-4 flex flex-col items-start gap-2 md:gap-3">
+                                    <button type="submit" :disabled="status === 'loading'"
+                                            class="font-gilroy font-bold text-[10px] md:text-xs tracking-[0.3em] uppercase text-[#ffc60a] border border-[#ffc60a] px-6 py-2.5 md:px-8 md:py-4 hover:bg-[#ffc60a] hover:text-black transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto text-center">
+                                        <span x-show="status === 'idle'">Enviar Mensagem</span>
+                                        <span x-show="status === 'loading'" class="animate-pulse">Enviando...</span>
+                                        <span x-show="status === 'success'">Mensagem Enviada!</span>
+                                        <span x-show="status === 'error'">Tentar Novamente</span>
+                                    </button>
+                                    
+                                    <p x-show="status === 'success'" class="font-serifa italic text-green-400 text-xs md:text-sm mt-1 md:mt-2" x-transition>Obrigado! Retornaremos em breve.</p>
+                                    <p x-show="status === 'error'" class="font-serifa italic text-red-400 text-xs md:text-sm mt-1 md:mt-2" x-transition>Houve um erro. Tente novamente.</p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            </div>
+        </div>
+    </main>
+<div x-data="{ 
+            open: false, 
+            vimeoId: '', 
+            titulo: '', 
+            descricao: '', 
+            cliente: '', 
+            direcao: '', 
+            filmmaker: '',
+            producao: '', 
+            assistente_direcao: '',
+            assistente_audio: '',
+            captacao_audio_mixagem: '',
+            edicao_som_mixagem: '',
+            captacao_som: '',
+            mixagem: ''
+         }" 
+         @open-video.window="
+            vimeoId = $event.detail.id;
+            titulo = $event.detail.titulo;
+            descricao = $event.detail.descricao;
+            cliente = $event.detail.cliente;
+            direcao = $event.detail.direcao;
+            filmmaker = $event.detail.filmmaker;
+            producao = $event.detail.producao;
+            assistente_direcao = $event.detail.assistente_direcao;
+            assistente_audio = $event.detail.assistente_audio; /* <-- A NOVA CATEGORIA MAPEADA AQUI */
+            captacao_audio_mixagem = $event.detail.captacao_audio_mixagem;
+            edicao_som_mixagem = $event.detail.edicao_som_mixagem;
+            captacao_som = $event.detail.captacao_som;
+            mixagem = $event.detail.mixagem;
+            open = true;
+         "
+         @keydown.escape.window="open = false; vimeoId = '';"
+         x-show="open" 
+         class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-sm p-4 md:p-10"
+         style="display: none;">
+        
+        <div x-show="open"
+             x-transition:enter="transition ease-out duration-700 delay-100"
+             x-transition:enter-start="opacity-0 scale-90 translate-y-8"
+             x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+             x-transition:leave="transition ease-in duration-300"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-95"
+             class="relative w-full max-w-5xl flex flex-col gap-6">
+            
+            <button @click="open = false; vimeoId = '';" class="absolute -top-10 md:-top-12 right-0 text-white hover:text-[#ffc60a] transition-colors group flex items-center gap-2 z-50">
+                <span class="font-gilroy text-xs tracking-[0.2em] uppercase opacity-0 group-hover:opacity-100 transition-opacity">Fechar</span>
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+
+            <div class="w-full aspect-video shadow-2xl shadow-black/50 bg-black">
+                <template x-if="open">
+                    <iframe :src="`https://player.vimeo.com/video/${vimeoId}?autoplay=1&color=ffc60a&title=0&byline=0&portrait=0`" 
+                            class="w-full h-full" 
+                            frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen>
+                    </iframe>
+                </template>
+            </div>
+
+            <div x-show="titulo" class="w-full flex flex-col md:flex-row gap-6 md:gap-16 text-white/70 font-gilroy text-sm md:text-base tracking-wide">
+                
+                <div class="flex-1">
+                    <h3 class="font-gilroy font-bold text-[#ffc60a] text-lg md:text-xl uppercase tracking-widest mb-3" x-text="titulo"></h3>
+                    <p x-show="cliente"><span class="font-gilroy font-bold text-white/90">Cliente:</span> <span class="font-serifa" x-text="cliente"></span></p>
+                    
+                    <p x-show="descricao" 
+                       class="font-serifa text-base md:text-lg italic text-white/80 leading-relaxed border-t border-white/10 pt-3" 
+                       x-text="descricao"></p>
+                </div>
+                
+                <div class="flex-1 flex flex-col gap-1 md:border-l md:border-white/10 md:pl-8">
+                    <p x-show="direcao"><span class="font-gilroy font-bold text-white/90">Direção:</span> <span class="font-serifa" x-text="direcao"></span></p>
+                    <p x-show="filmmaker"><span class="font-gilroy font-bold text-white/90">Filmmaker:</span> <span class="font-serifa" x-text="filmmaker"></span></p>
+                    <p x-show="producao"><span class="font-gilroy font-bold text-white/90">Produção:</span> <span class="font-serifa" x-text="producao"></span></p>
+                    <p x-show="assistente_direcao"><span class="font-gilroy font-bold text-white/90">Assistente de direção:</span> <span class="font-serifa" x-text="assistente_direcao"></span></p>
+					<p x-show="assistente_audio"><span class="font-gilroy font-bold text-white/90">Assistente de direção e captação de áudio:</span> <span class="font-serifa" x-text="assistente_audio"></span></p>
+                    <p x-show="captacao_audio_mixagem"><span class="font-gilroy font-bold text-white/90">Captação de áudio e mixagem:</span> <span class="font-serifa" x-text="captacao_audio_mixagem"></span></p>
+                    <p x-show="edicao_som_mixagem"><span class="font-gilroy font-bold text-white/90">Edição de áudio e mixagem:</span> <span class="font-serifa" x-text="edicao_som_mixagem"></span></p>
+                    <p x-show="captacao_som"><span class="font-gilroy font-bold text-white/90">Som direto:</span> <span class="font-serifa" x-text="captacao_som"></span></p>
+                    <p x-show="mixagem"><span class="font-gilroy font-bold text-white/90">Mixagem:</span> <span class="font-serifa" x-text="mixagem"></span></p>
+                </div>
+            </div>
+         </div>
+
+    </div>
+</body>
+</html>
