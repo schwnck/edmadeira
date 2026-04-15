@@ -61,8 +61,8 @@
 	
     <nav class="fixed top-0 w-full z-[100] flex justify-between items-center p-8 md:p-10 mix-blend-difference pointer-events-none">
          
-        <a href="#hero" 
-           @click.prevent="scrollToSection(0); mobileMenuOpen = false" 
+<a href="#hero" 
+           @click.prevent="mobileMenuOpen = false; setTimeout(() => scrollToSection(0), 400)" 
            class="text-2xl tracking-tighter pointer-events-auto flex items-baseline">
             <span class="font-gilroy font-bold text-white">E</span>
             <span class="font-gilroy font-bold text-[#ffc60a]">d</span>
