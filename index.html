@@ -369,7 +369,6 @@
                         async enviarEmail() {
                             this.status = 'loading';
                             try {
-                                // Aponta para o arquivo PHP que você criará na Hostinger
                                 let response = await fetch('enviar.php', {
                                     method: 'POST',
                                     headers: { 'Content-Type': 'application/json' },
@@ -377,14 +376,13 @@
                                 });
                                 if (response.ok) {
                                     this.status = 'success';
-                                    this.formData = { nome: '', email: '', mensagem: '' }; // Limpa o form
+                                    this.formData = { nome: '', email: '', mensagem: '' }; 
                                 } else {
                                     this.status = 'error';
                                 }
                             } catch (err) {
                                 this.status = 'error';
                             }
-                            // Retorna ao estado normal depois de 5 segundos
                             setTimeout(() => { if(this.status !== 'idle') this.status = 'idle' }, 5000);
                         }
                      }"
@@ -392,54 +390,67 @@
 
                     <div class="flex-1 text-center md:text-left will-change-transform"
                          :style="`transform: translateX(${-(translatePercentage - 300) * 0.08}vw);`">
-                        <h2 class="font-gilroy font-bold text-[clamp(2.5rem,5vw,6rem)] uppercase leading-[0.9] text-white mb-6">
-                            Vamos construir o<br><span class="text-[#ffc60a]">próximo quadro?</span>
-                        </h2>
-                        <p class="font-serifa text-lg md:text-2xl text-gray-400 italic mb-8">
-                            Conte-nos sobre o seu projeto ou <br class="hidden md:block">
-                            <a href="mailto:contato@edmadeira.com" class="border-b border-white/20 hover:border-[#ffc60a] hover:text-[#ffc60a] transition-colors pb-1">envie um email direto</a>.
-                        </p>
+                        
+                        <div class="transition-all duration-1000 ease-out"
+                             :class="currentSection >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'">
+                            <h2 class="font-gilroy font-bold text-[clamp(2.5rem,5vw,6rem)] uppercase leading-[0.9] text-white mb-6">
+                                Vamos construir o<br><span class="text-[#ffc60a]">próximo quadro?</span>
+                            </h2>
+                        </div>
+
+                        <div class="transition-all duration-1000 ease-out" style="transition-delay: 200ms;"
+                             :class="currentSection >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'">
+                            <p class="font-serifa text-lg md:text-2xl text-gray-400 italic mb-8">
+                                Conte-nos sobre o seu projeto ou <br class="hidden md:block">
+                                <a href="mailto:contato@edmadeira.com" class="border-b border-white/20 hover:border-[#ffc60a] hover:text-[#ffc60a] transition-colors pb-1">envie um email direto</a>.
+                            </p>
+                        </div>
                     </div>
 
-                    <div class="w-full md:w-[450px] bg-black/40 backdrop-blur-md p-8 border border-white/10 will-change-transform"
+                    <div class="w-full md:w-[450px] will-change-transform"
                          :style="`transform: translateX(${(translatePercentage - 300) * 0.08}vw);`">
                         
-                        <form @submit.prevent="enviarEmail" class="flex flex-col gap-8">
+                        <div class="bg-black/40 backdrop-blur-md p-8 border border-white/10 transition-all duration-1000 ease-out"
+                             style="transition-delay: 400ms;"
+                             :class="currentSection >= 3 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-16 scale-95'">
                             
-                            <div class="relative group">
-                                <input type="text" id="nome" x-model="formData.nome" required
-                                       class="w-full bg-transparent border-b border-white/20 text-white text-lg font-serifa italic py-2 focus:outline-none focus:border-[#ffc60a] transition-colors peer placeholder-transparent" 
-                                       placeholder="Nome">
-                                <label for="nome" class="absolute left-0 -top-4 text-[10px] font-gilroy font-bold uppercase tracking-[0.2em] text-[#ffc60a] transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-white/50 peer-placeholder-shown:top-2 peer-placeholder-shown:font-serifa peer-placeholder-shown:italic peer-placeholder-shown:tracking-normal peer-focus:-top-4 peer-focus:text-[10px] peer-focus:font-gilroy peer-focus:text-[#ffc60a] peer-focus:not-italic peer-focus:tracking-[0.2em]">Nome</label>
-                            </div>
-
-                            <div class="relative group">
-                                <input type="email" id="email" x-model="formData.email" required
-                                       class="w-full bg-transparent border-b border-white/20 text-white text-lg font-serifa italic py-2 focus:outline-none focus:border-[#ffc60a] transition-colors peer placeholder-transparent" 
-                                       placeholder="Email">
-                                <label for="email" class="absolute left-0 -top-4 text-[10px] font-gilroy font-bold uppercase tracking-[0.2em] text-[#ffc60a] transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-white/50 peer-placeholder-shown:top-2 peer-placeholder-shown:font-serifa peer-placeholder-shown:italic peer-placeholder-shown:tracking-normal peer-focus:-top-4 peer-focus:text-[10px] peer-focus:font-gilroy peer-focus:text-[#ffc60a] peer-focus:not-italic peer-focus:tracking-[0.2em]">Email</label>
-                            </div>
-
-                            <div class="relative group">
-                                <textarea id="mensagem" x-model="formData.mensagem" required rows="3"
-                                          class="w-full bg-transparent border-b border-white/20 text-white text-lg font-serifa italic py-2 focus:outline-none focus:border-[#ffc60a] transition-colors peer placeholder-transparent resize-none" 
-                                          placeholder="Mensagem"></textarea>
-                                <label for="mensagem" class="absolute left-0 -top-4 text-[10px] font-gilroy font-bold uppercase tracking-[0.2em] text-[#ffc60a] transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-white/50 peer-placeholder-shown:top-2 peer-placeholder-shown:font-serifa peer-placeholder-shown:italic peer-placeholder-shown:tracking-normal peer-focus:-top-4 peer-focus:text-[10px] peer-focus:font-gilroy peer-focus:text-[#ffc60a] peer-focus:not-italic peer-focus:tracking-[0.2em]">Sua Mensagem</label>
-                            </div>
-
-                            <div class="mt-4 flex flex-col items-start gap-3">
-                                <button type="submit" :disabled="status === 'loading'"
-                                        class="font-gilroy font-bold text-xs tracking-[0.3em] uppercase text-[#ffc60a] border border-[#ffc60a] px-8 py-4 hover:bg-[#ffc60a] hover:text-black transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto text-center">
-                                    <span x-show="status === 'idle'">Enviar Mensagem</span>
-                                    <span x-show="status === 'loading'" class="animate-pulse">Enviando...</span>
-                                    <span x-show="status === 'success'">Mensagem Enviada!</span>
-                                    <span x-show="status === 'error'">Tentar Novamente</span>
-                                </button>
+                            <form @submit.prevent="enviarEmail" class="flex flex-col gap-8">
                                 
-                                <p x-show="status === 'success'" class="font-serifa italic text-green-400 text-sm mt-2" x-transition>Obrigado! Retornaremos em breve.</p>
-                                <p x-show="status === 'error'" class="font-serifa italic text-red-400 text-sm mt-2" x-transition>Houve um erro com o servidor. Tente novamente.</p>
-                            </div>
-                        </form>
+                                <div class="relative group">
+                                    <input type="text" id="nome" x-model="formData.nome" required
+                                           class="w-full bg-transparent border-b border-white/20 text-white text-lg font-serifa italic py-2 focus:outline-none focus:border-[#ffc60a] transition-colors peer placeholder-transparent" 
+                                           placeholder="Nome">
+                                    <label for="nome" class="absolute left-0 -top-4 text-[10px] font-gilroy font-bold uppercase tracking-[0.2em] text-[#ffc60a] transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-white/50 peer-placeholder-shown:top-2 peer-placeholder-shown:font-serifa peer-placeholder-shown:italic peer-placeholder-shown:tracking-normal peer-focus:-top-4 peer-focus:text-[10px] peer-focus:font-gilroy peer-focus:text-[#ffc60a] peer-focus:not-italic peer-focus:tracking-[0.2em]">Nome</label>
+                                </div>
+
+                                <div class="relative group">
+                                    <input type="email" id="email" x-model="formData.email" required
+                                           class="w-full bg-transparent border-b border-white/20 text-white text-lg font-serifa italic py-2 focus:outline-none focus:border-[#ffc60a] transition-colors peer placeholder-transparent" 
+                                           placeholder="Email">
+                                    <label for="email" class="absolute left-0 -top-4 text-[10px] font-gilroy font-bold uppercase tracking-[0.2em] text-[#ffc60a] transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-white/50 peer-placeholder-shown:top-2 peer-placeholder-shown:font-serifa peer-placeholder-shown:italic peer-placeholder-shown:tracking-normal peer-focus:-top-4 peer-focus:text-[10px] peer-focus:font-gilroy peer-focus:text-[#ffc60a] peer-focus:not-italic peer-focus:tracking-[0.2em]">Email</label>
+                                </div>
+
+                                <div class="relative group">
+                                    <textarea id="mensagem" x-model="formData.mensagem" required rows="3"
+                                              class="w-full bg-transparent border-b border-white/20 text-white text-lg font-serifa italic py-2 focus:outline-none focus:border-[#ffc60a] transition-colors peer placeholder-transparent resize-none" 
+                                              placeholder="Mensagem"></textarea>
+                                    <label for="mensagem" class="absolute left-0 -top-4 text-[10px] font-gilroy font-bold uppercase tracking-[0.2em] text-[#ffc60a] transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-white/50 peer-placeholder-shown:top-2 peer-placeholder-shown:font-serifa peer-placeholder-shown:italic peer-placeholder-shown:tracking-normal peer-focus:-top-4 peer-focus:text-[10px] peer-focus:font-gilroy peer-focus:text-[#ffc60a] peer-focus:not-italic peer-focus:tracking-[0.2em]">Sua Mensagem</label>
+                                </div>
+
+                                <div class="mt-4 flex flex-col items-start gap-3">
+                                    <button type="submit" :disabled="status === 'loading'"
+                                            class="font-gilroy font-bold text-xs tracking-[0.3em] uppercase text-[#ffc60a] border border-[#ffc60a] px-8 py-4 hover:bg-[#ffc60a] hover:text-black transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto text-center">
+                                        <span x-show="status === 'idle'">Enviar Mensagem</span>
+                                        <span x-show="status === 'loading'" class="animate-pulse">Enviando...</span>
+                                        <span x-show="status === 'success'">Mensagem Enviada!</span>
+                                        <span x-show="status === 'error'">Tentar Novamente</span>
+                                    </button>
+                                    
+                                    <p x-show="status === 'success'" class="font-serifa italic text-green-400 text-sm mt-2" x-transition>Obrigado! Retornaremos em breve.</p>
+                                    <p x-show="status === 'error'" class="font-serifa italic text-red-400 text-sm mt-2" x-transition>Houve um erro com o servidor. Tente novamente.</p>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </section>
