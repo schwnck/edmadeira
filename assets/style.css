@@ -105,27 +105,28 @@ html {
     }
 }
 /* ========================================================
-   VIMEO BACKGROUND COVER (Força a proporção 16:9)
+   VIMEO BACKGROUND COVER (Corte perfeito 16:9 sem barras)
    ======================================================== */
 .vimeo-wrapper iframe {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100vw;
-    height: 100vh;
-    transform: translate(-50%, -50%);
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    pointer-events: none !important;
 }
 
-/* Se a tela for mais larga que 16:9 (Desktop Ultrawide), baseia-se na largura e corta topo/base */
+/* Telas mais LARGAS (Monitores) - Baseia na Largura */
 @media (min-aspect-ratio: 16/9) {
     .vimeo-wrapper iframe {
-        height: 56.25vw;
+        width: 100vw !important;
+        height: 56.25vw !important; /* Exatamente 16:9 */
     }
 }
 
-/* Se a tela for mais alta que 16:9 (Celulares ou Monitores normais), baseia-se na altura e corta as laterais */
+/* Telas mais ALTAS (Telemóveis/Tablets) - Baseia na Altura */
 @media (max-aspect-ratio: 16/9) {
     .vimeo-wrapper iframe {
-        width: 177.78vh;
+        width: 177.78vh !important; /* Exatamente 16:9 */
+        height: 100vh !important;
     }
 }
