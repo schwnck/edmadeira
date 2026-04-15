@@ -104,29 +104,3 @@ html {
         gap: 24px !important;
     }
 }
-/* ========================================================
-   VIMEO BACKGROUND COVER (Corte perfeito 16:9 sem barras)
-   ======================================================== */
-.vimeo-wrapper iframe {
-    position: absolute !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    pointer-events: none !important;
-}
-
-/* Telas mais LARGAS (Monitores) - Baseia na Largura */
-@media (min-aspect-ratio: 16/9) {
-    .vimeo-wrapper iframe {
-        width: 100vw !important;
-        height: 56.25vw !important; /* Exatamente 16:9 */
-    }
-}
-
-/* Telas mais ALTAS (Telemóveis/Tablets) - Baseia na Altura */
-@media (max-aspect-ratio: 16/9) {
-    .vimeo-wrapper iframe {
-        width: 177.78vh !important; /* Exatamente 16:9 */
-        height: 100vh !important;
-    }
-}
