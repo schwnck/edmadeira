@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EdMADEIRA | Filmes</title>
     <script src="https://cdn.tailwindcss.com"></script>
+	<script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/style.css">
@@ -154,16 +156,17 @@
 </div>
 					
 				
-                    <div class="relative z-10 text-center flex flex-col items-center px-4">
-                        <img src="img/logo_edmadeira.png" alt="Logo EdMadeira" class="w-32 md:w-48 mb-8 drop-shadow-[0_0_15px_rgba(255,198,10,0.3)]">
-                        <h1 class="font-gilroy font-bold text-[clamp(3rem,8vw,8rem)] uppercase leading-[0.9] tracking-tighter">
-                            Precisão em<br>Moviment<span class="text-[#ffc60a]">o.</span>
-                        </h1>
-                        <p class="font-serifa italic text-lg md:text-2xl text-gray-400 mt-6 max-w-2xl mx-auto">
-                            Excelência em cada quadro. <br class="md:hidden"> Produção audiovisual boutique.
-                        </p>
-                    </div>
-
+ <div class="relative z-10 text-center flex flex-col items-center px-4 will-change-transform"
+     :style="`opacity: ${1 - (scrollPos / 500)}; transform: translateY(-${scrollPos * 0.4}px);`">
+    <img src="img/logo_edmadeira.png" alt="Logo EdMadeira" class="w-32 md:w-48 mb-8 drop-shadow-[0_0_15px_rgba(255,198,10,0.3)]">
+    <h1 class="font-gilroy font-bold text-[clamp(3rem,8vw,8rem)] uppercase leading-[0.9] tracking-tighter">
+        Precisão em<br>Moviment<span class="text-[#ffc60a]">o.</span>
+    </h1>
+    <p class="font-serifa italic text-lg md:text-2xl text-gray-400 mt-6 max-w-2xl mx-auto">
+        Excelência em cada quadro. <br class="md:hidden"> Produção audiovisual boutique.
+    </p>
+</div>
+					
                     <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center space-y-2 opacity-50 z-10">
                         <span class="font-gilroy font-bold text-[10px] tracking-[0.3em] uppercase">Scroll</span>
                         <div class="w-[1px] h-12 bg-gradient-to-b from-[#ffc60a] to-transparent"></div>
@@ -171,14 +174,15 @@
                 </section>
 				
 <section id="portfolio" 
-         x-data="{ 
-            canScrollRight: true,
-            checkScroll(el) {
-                /* Usamos '>' para evitar o erro de caracteres especiais no Dreamweaver */
-                this.canScrollRight = (el.scrollWidth - el.clientWidth - 30) > el.scrollLeft;
-            }
-         }"
-         class="w-screen h-screen flex-shrink-0 relative flex flex-col px-6 md:px-20 pt-24 md:pt-32 pb-12 md:pb-20 border-r border-white/5 bg-[#050505] overflow-hidden">
+         x-data="{ isVisible: false }"
+         x-intersect.once="isVisible = true"
+         class="w-screen h-screen flex-shrink-0 relative flex flex-col px-6 md:px-20 pt-24 md:pt-32 pb-8 md:pb-16 border-r border-white/5 bg-[#050505] overflow-hidden">
+         
+    <div class="relative z-10 mb-6 md:mb-0 transition-all duration-1000 ease-out"
+         :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'">
+        <h2 class="font-gilroy font-bold text-3xl md:text-4xl uppercase text-white">Trabalhos Selecionados</h2>
+        <div class="w-12 h-[2px] bg-[#ffc60a] mt-4"></div>
+    </div>	
     
     <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <img src="img/entrega-photo_1440.jpg" 
@@ -205,21 +209,27 @@
              class="w-full portfolio-matrix hide-scroll py-4">
             
             <div @click="$dispatch('open-video', { id: '922911289', titulo: 'AZEITE SABIÁ (2023)', descricao: 'Mini documentário contando um pouco sobre o plantio, colheita e fabricação do Azeite Sabiá.', cliente: 'Azeite Sabiá', filmmaker: 'Freddy Leal', edicao_som_mixagem: 'Guilherme Schwenck' })" 
-                 class="w-40 md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 shrink-0 snap-start">
+                 :class="isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-16 scale-95'"
+     style="transition-delay: 50ms;"
+     class="w-40 md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 shrink-0 snap-start transition-all duration-700 ease-out">
                 <img src="img/thumb-sabia_2023.jpg" alt="Thumb Azeite Sabiá" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
                 <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
                 <div class="absolute bottom-2 left-2 z-10"><h4 class="font-gilroy font-bold uppercase tracking-widest text-[8px] md:text-[10px] text-white">Azeite Sabiá</h4></div>
             </div>
 
             <div @click="$dispatch('open-video', { id: '1086753978', titulo: 'EQUIPE CIDADÃ (2025)', descricao: 'Episódio da série &quot;Equipe Cidadã&quot;, desenvolvida para o Sistema Campo Limpo e veiculada em escolas de todo o país.', cliente: 'inPEV', direcao: 'Freddy Leal', producao: 'Erick Florentino', animacao: 'eFrame', captacao_som: 'Mandril Áudio', edicao_som_mixagem: 'Guilherme Schwenck' })" 
-                 class="w-40 md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 shrink-0 snap-start">
+                 :class="isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-16 scale-95'"
+     style="transition-delay: 100ms;"
+     class="w-40 md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 shrink-0 snap-start transition-all duration-700 ease-out">
                 <img src="img/thumb-equipe.jpg" alt="Thumb inPEV - Equipe Cidadã (2025)" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
                 <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
                 <div class="absolute bottom-2 left-2 z-10"><h4 class="font-gilroy font-bold uppercase tracking-widest text-[8px] md:text-[10px] text-white">inPEV</h4></div>
             </div>
 
             <div @click="$dispatch('open-video', { id: '1183007018', titulo: 'OPUS: BRUNA AMARO', descricao: 'Episódio piloto de série documental sobre jovens artistas e suas produções.', cliente: '', direcao: '', edicao_som_mixagem: 'Guilherme Schwenck' })" 
-                 class="w-40 md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 shrink-0 snap-start">
+                 :class="isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-16 scale-95'"
+     style="transition-delay: 150ms;"
+     class="w-40 md:w-80 aspect-video relative group cursor-pointer bg-black overflow-hidden border border-white/10 shrink-0 snap-start transition-all duration-700 ease-out">
                 <img src="img/thumb-opus-bruna.jpg" alt="Thumb Opus: Bruna Amaro" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
                 <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-500"></div>
                 <div class="absolute bottom-2 left-2 z-10"><h4 class="font-gilroy font-bold uppercase tracking-widest text-[8px] md:text-[10px] text-white">Opus: Bruna Amaro</h4></div>
