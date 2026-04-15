@@ -58,7 +58,13 @@
 /* Ativa o Snap no contentor de scroll (o corpo ou o main) */
 html {
     scroll-snap-type: y mandatory;
-    scroll-behavior: smooth;
+}
+
+/* Smooth scroll apenas no Desktop */
+@media (min-width: 1024px) {
+    html {
+        scroll-behavior: smooth;
+    }
 }
 
 /* Define onde cada 'paragem' deve acontecer */
