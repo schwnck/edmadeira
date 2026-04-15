@@ -137,14 +137,19 @@
                  style="transition: transform 0.1s ease-out;">
                 
                 <section class="w-screen h-screen flex-shrink-0 relative flex flex-col items-center justify-center border-r border-white/5">
-
-<div class="absolute inset-0 z-0 overflow-hidden pointer-events-none grayscale opacity-40">
+                  <!--  <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover z-0 opacity-40 grayscale">
+                        <source src="img/edmadeira_01.webm" type="video/webm">
+                        <source src="img/edmadeira_01.mp4" type="video/mp4">
+                    </video>
+                    -->
+<div class="absolute inset-0 z-0 overflow-hidden pointer-events-none grayscale opacity-40 vimeo-wrapper">
     <iframe src="https://player.vimeo.com/video/1076422237?background=1" 
             frameborder="0" 
-            allow="autoplay; fullscreen" 
-            class="absolute top-1/2 left-1/2 w-[100vw] h-[100vh] min-w-[177.77vh] min-h-[56.25vw] -translate-x-1/2 -translate-y-1/2">
+            allow="autoplay; fullscreen">
     </iframe>
-</div>					
+</div>
+					
+				
                     <div class="relative z-10 text-center flex flex-col items-center px-4">
                         <img src="img/logo_edmadeira.png" alt="Logo EdMadeira" class="w-32 md:w-48 mb-8 drop-shadow-[0_0_15px_rgba(255,198,10,0.3)]">
                         <h1 class="font-gilroy font-bold text-[clamp(3rem,8vw,8rem)] uppercase leading-[0.9] tracking-tighter">
