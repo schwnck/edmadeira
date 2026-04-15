@@ -32,8 +32,15 @@
         return Math.round(this.scrollPos / window.innerHeight);
     },
     scrollToSection(vhMultiplier) {
-        const targetPosition = window.innerHeight * vhMultiplier;
-        const startPosition = window.pageYOffset;
+    const targetPosition = window.innerHeight * vhMultiplier;
+
+    // No mobile, pula direto sem animação para não conflitar com o scroll-snap
+    if (window.innerWidth < 1024) {
+        window.scrollTo({ top: targetPosition, behavior: 'instant' });
+        return;
+    }
+
+    const startPosition = window.pageYOffset;
         const distance = targetPosition - startPosition;
         let startTime = null;
         const duration = 1500; 
