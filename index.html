@@ -31,13 +31,19 @@
         if (window.innerHeight === 0) return 0;
         return Math.round(this.scrollPos / window.innerHeight);
     },
-    scrollToSection(vhMultiplier) {
-    const targetPosition = window.innerHeight * vhMultiplier;
+    /* NOVO: Motor matemático infalível */
+    scrollToSection(index) {
+        // Altura exata da tela do celular no momento do clique
+        const alturaTela = window.innerHeight;
+        const destino = alturaTela * index;
 
-    // No mobile, pula direto sem animação para não conflitar com o scroll-snap
-    if (window.innerWidth < 1024) {
-        window.scrollTo({ top: targetPosition, behavior: 'instant' });
-        return;
+        if (window.innerWidth < 768) {
+            // MOBILE: Pulo instantâneo (derrota o bug do iOS/Android)
+            window.scrollTo({ top: destino, behavior: 'auto' });
+        } else {
+            // DESKTOP: Mantém a elegância do deslize cinematográfico
+            window.scrollTo({ top: destino, behavior: 'smooth' });
+        }
     }
 
     const startPosition = window.pageYOffset;
@@ -83,14 +89,14 @@
 	
 <nav class="fixed top-0 w-full z-[100] flex justify-between items-center p-8 md:p-10 mix-blend-difference pointer-events-none">
 	 
-    <a href="#" 
-       @click.prevent="scrollToSection(0); mobileMenuOpen = false" 
-       class="text-2xl tracking-tighter pointer-events-auto flex items-baseline">
-		<span class="font-gilroy font-bold text-white">E</span>
-		   <span class="font-gilroy font-bold text-[#ffc60a]">d</span>
-    <span class="font-gilroy font-light uppercase text-white">MADEIRA</span>
-    <span class="font-gilroy font-bold text-[#ffc60a]">.</span>
-</a>
+    <a href="#hero" 
+           @click.prevent="mobileMenuOpen = false; setTimeout(() => scrollToSection(0), 100)" 
+           class="text-2xl tracking-tighter pointer-events-auto flex items-baseline">
+            <span class="font-gilroy font-bold text-white">E</span>
+            <span class="font-gilroy font-bold text-[#ffc60a]">d</span>
+            <span class="font-gilroy font-light uppercase text-white">MADEIRA</span>
+            <span class="font-gilroy font-bold text-[#ffc60a]">.</span>
+        </a>
 <div class="hidden md:flex space-x-8 font-gilroy font-bold text-[10px] tracking-[0.4em] uppercase opacity-70 pointer-events-auto">
         <a href="#portfolio" @click.prevent="scrollToSection(1)" :class="currentSection === 1 ? 'text-[#ffc60a] opacity-100' : 'text-white hover:text-[#ffc60a] transition-colors'">Portfólio</a>
         <a href="#sobre" @click.prevent="scrollToSection(2)" :class="currentSection === 2 ? 'text-[#ffc60a] opacity-100' : 'text-white hover:text-[#ffc60a] transition-colors'">Sobre</a>
@@ -121,15 +127,18 @@
     </button>
 
     <div class="flex flex-col space-y-8 font-gilroy font-bold text-4xl uppercase tracking-tighter">
-        <a href="#portfolio" @click.prevent="scrollToSection(1); mobileMenuOpen = false" 
-           :class="currentSection === 1 ? 'text-[#ffc60a]' : 'text-white'">Portfólio</a>
-        
-        <a href="#sobre" @click.prevent="scrollToSection(2); mobileMenuOpen = false" 
-           :class="currentSection === 2 ? 'text-[#ffc60a]' : 'text-white'">Sobre</a>
-        
-        <a href="#contato" @click.prevent="scrollToSection(3); mobileMenuOpen = false" 
-           :class="currentSection === 3 ? 'text-[#ffc60a]' : 'text-white'">Contato</a>
-    </div>
+            <a href="#portfolio" 
+               @click.prevent="mobileMenuOpen = false; setTimeout(() => scrollToSection(1), 100)" 
+               :class="currentSection === 1 ? 'text-[#ffc60a]' : 'text-white'">Portfólio</a>
+            
+            <a href="#sobre" 
+               @click.prevent="mobileMenuOpen = false; setTimeout(() => scrollToSection(2), 100)" 
+               :class="currentSection === 2 ? 'text-[#ffc60a]' : 'text-white'">Sobre</a>
+            
+            <a href="#contato" 
+               @click.prevent="mobileMenuOpen = false; setTimeout(() => scrollToSection(3), 100)" 
+               :class="currentSection === 3 ? 'text-[#ffc60a]' : 'text-white'">Contato</a>
+        </div>
 
     <div class="absolute bottom-10 left-10">
         <p class="font-gilroy text-[10px] tracking-[0.4em] uppercase text-white/30">EdMADEIRA Filmes © 2026</p>
