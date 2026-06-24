@@ -2,13 +2,13 @@
 [x-cloak] { display: none !important; }
 @font-face {
     font-family: 'Gilroy';
-    src: url('./fonts/Gilroy-Bold.woff2') format('woff2');
+    src: url('./gilroy/Gilroy-Bold.ttf') format('truetype');
     font-weight: bold;
 }
 @font-face {
     font-family: 'Gilroy';
-    src: url('./fonts/Gilroy-Light.woff2') format('woff2');
-    font-weight: 300; /* 300 é o padrão para Light */
+    src: url('./gilroy/Gilroy-Light.ttf') format('truetype');
+    font-weight: 300;
 }
 
 .font-gilroy { font-family: 'Gilroy', sans-serif; }

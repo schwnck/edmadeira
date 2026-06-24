@@ -153,7 +153,7 @@
 
 						<div class="relative z-10 text-center flex flex-col items-center px-4 will-change-transform"
 		 :style="`opacity: ${1 - (scrollPos / 500)}; transform: translateY(-${scrollPos * 0.4}px);`">
-		<img src="img/logo_edmadeira.png" alt="Logo EdMadeira" class="w-32 md:w-48 mb-8 drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+		<img src="img/logo_edmadeira.png" alt="Logo EdMadeira" class="w-32 md:w-48 mb-8 drop-shadow-[0_0_30px_rgba(255,255,255,0.6)]">
 		<h1 class="font-gilroy font-bold text-[clamp(3rem,8vw,8rem)] uppercase leading-[0.9] tracking-tighter">
 			Precisão em<br>Moviment<span class="text-[#ffc60a]">o.</span>
 		</h1>
@@ -179,7 +179,7 @@
 
 		<div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
 			<img src="img/entrega-photo_1440.jpg" 
-				 srcset="img/entrega-photo_720.jpg 1280w, img/entrega-photo_1080.jpg 1920w, img/entrega-photo_1440.jpg 2560w"
+				 srcset="img/entrega-photo_720.jpg 720w, img/entrega-photo_1080.jpg 1080w, img/entrega-photo_1440.jpg 1440w"
 				 sizes="150vw"
 				 class="absolute top-0 w-[150vw] max-w-none h-full object-cover opacity-20" 
 				 style="left: -25vw;"
@@ -323,10 +323,10 @@
 
 					<section id="sobre" class="w-screen h-screen flex-shrink-0 relative flex items-center justify-center border-r border-white/5">
 	 <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-	<img src="img/sobre-photo_2560.jpg" 
-		 srcset="img/sobre-photo_720.jpg 1280w,
-				 img/sobre-photo_1080.jpg 1920w,
-				 img/sobre-photo_1440.jpg 2560w"
+	<img src="img/sobre-photo_1440.jpg"
+		 srcset="img/sobre-photo_720.jpg 720w,
+				 img/sobre-photo_1080.jpg 1080w,
+				 img/sobre-photo_1440.jpg 1440w"
 		 sizes="150vw"
 		 class="absolute top-0 w-[150vw] max-w-none h-full object-cover grayscale opacity-30 will-change-transform" 
 		 style="left: -25vw;"
@@ -335,7 +335,7 @@
 	</div>
 
 	<div class="relative z-10 text-center max-w-4xl px-8 will-change-transform"
-		 :style="`transform: translateX(${-(translatePercentage - 200) * 0.08}vw);` text-center">
+		 :style="`transform: translateX(${-(translatePercentage - 200) * 0.08}vw);`">
 
 		<h2 class="font-gilroy font-bold text-3xl md:text-7xl uppercase mb-8 text-white leading-tight">
 			Experiência e <br class="md:hidden"> Renovação
@@ -350,8 +350,8 @@
 	<section id="contato" class="w-screen h-screen flex-shrink-0 relative flex items-center justify-center px-6 md:px-20 bg-[#050505] overflow-hidden">
 
 					<div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-						<img src="img/contato-photo_2560.jpg" 
-							 srcset="img/contato-photo_720.jpg 1280w, img/contato-photo_1080.jpg 1920w, img/contato-photo_1440.jpg 2560w"
+						<img src="img/contato-photo_1440.jpg"
+							 srcset="img/contato-photo_720.jpg 720w, img/contato-photo_1080.jpg 1080w, img/contato-photo_1440.jpg 1440w"
 							 sizes="150vw"
 							 class="absolute top-0 w-[150vw] max-w-none h-full object-cover opacity-20 will-change-transform" 
 							 style="left: -25vw;"
@@ -365,9 +365,9 @@
 							async enviarEmail() {
 								this.status = 'loading';
 								try {
-									let response = await fetch('enviar.php', {
+									let response = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
 										method: 'POST',
-										headers: { 'Content-Type': 'application/json' },
+										headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
 										body: JSON.stringify(this.formData)
 									});
 									if (response.ok) {
@@ -455,14 +455,15 @@
 			</div>
 		</main>
 	<div x-data="{ 
-				open: false, 
-				vimeoId: '', 
-				titulo: '', 
-				descricao: '', 
-				cliente: '', 
-				direcao: '', 
+				open: false,
+				vimeoId: '',
+				titulo: '',
+				descricao: '',
+				cliente: '',
+				direcao: '',
 				filmmaker: '',
-				producao: '', 
+				producao: '',
+				animacao: '',
 				assistente_direcao: '',
 				assistente_audio: '',
 				captacao_audio_mixagem: '',
@@ -478,8 +479,9 @@
 				direcao = $event.detail.direcao;
 				filmmaker = $event.detail.filmmaker;
 				producao = $event.detail.producao;
+				animacao = $event.detail.animacao;
 				assistente_direcao = $event.detail.assistente_direcao;
-				assistente_audio = $event.detail.assistente_audio; /* <-- A NOVA CATEGORIA MAPEADA AQUI */
+				assistente_audio = $event.detail.assistente_audio;
 				captacao_audio_mixagem = $event.detail.captacao_audio_mixagem;
 				edicao_som_mixagem = $event.detail.edicao_som_mixagem;
 				captacao_som = $event.detail.captacao_som;
@@ -507,7 +509,7 @@
 
 				<div class="w-full aspect-video shadow-2xl shadow-black/50 bg-black">
 					<template x-if="open">
-						<iframe :src="`https://player.vimeo.com/video/${vimeoId}?autoplay=1&color=ffc60a&title=0&byline=0&portrait=0`" 
+						<iframe :src="`https://player.vimeo.com/video/${vimeoId}?autoplay=1&color=ffc60a&title=0&byline=0&portrait=0&dnt=1`"
 								class="w-full h-full" 
 								frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen>
 						</iframe>
@@ -534,6 +536,7 @@
 						<p x-show="captacao_audio_mixagem"><span class="font-gilroy font-bold text-white/90">Captação de áudio e mixagem:</span> <span class="font-serifa" x-text="captacao_audio_mixagem"></span></p>
 						<p x-show="edicao_som_mixagem"><span class="font-gilroy font-bold text-white/90">Edição de áudio e mixagem:</span> <span class="font-serifa" x-text="edicao_som_mixagem"></span></p>
 						<p x-show="captacao_som"><span class="font-gilroy font-bold text-white/90">Som direto:</span> <span class="font-serifa" x-text="captacao_som"></span></p>
+						<p x-show="animacao"><span class="font-gilroy font-bold text-white/90">Animação:</span> <span class="font-serifa" x-text="animacao"></span></p>
 						<p x-show="mixagem"><span class="font-gilroy font-bold text-white/90">Mixagem:</span> <span class="font-serifa" x-text="mixagem"></span></p>
 					</div>
 				</div>
