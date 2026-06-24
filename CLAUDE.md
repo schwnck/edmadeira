@@ -172,6 +172,16 @@ Old/unused files in `img/` are suffixed `_OLD` or `_SEPIA` — safe to delete.
 
 Items identified during the initial code audit. Ordered roughly by priority.
 
+### Launch Checklist
+CI/CD is already configured — `.github/workflows/static.yml` deploys to GitHub Pages on every push to `main`. The pipeline is ready; the following must be done before sharing the URL publicly:
+
+- [ ] **Enable GitHub Pages** — In repo Settings → Pages, set source to "GitHub Actions". Only needs to be done once.
+- [ ] **Add Formspree ID** — Replace `YOUR_FORM_ID` in `index.html` (search `YOUR_FORM_ID`). Waiting on client to create Formspree account.
+- [ ] **Custom domain** — If the client has a domain (e.g. `edmadeirafilmes.com.br`), add a `CNAME` file to the repo root with the domain, then point the DNS A records to GitHub Pages IPs (`185.199.108–111.153`). GitHub Pages will auto-provision HTTPS.
+- [ ] **Add WhatsApp number** — Needed for the WhatsApp CTA and Video Brief Generator output link.
+- [ ] **Test on mobile** — Scroll-jacking layout has known quirks on iOS Safari. Verify snap points and horizontal scroll feel on a real device before launch.
+- [ ] **Pin CDN versions** — Tailwind and Alpine.js use floating `@3.x.x` refs. Pin before launch so a CDN update can't break the site.
+
 ### Critical
 - [ ] **Add Formspree ID** — Replace `YOUR_FORM_ID` in `index.html:368` with the real endpoint. Until this is done, the contact form always fails silently.
 - [ ] **Convert Gilroy to woff2** — Fonts are currently served as `.ttf` from `assets/gilroy/`. Converting to `.woff2` would roughly halve the file size. The full family is available in that folder if more weights are ever needed.
