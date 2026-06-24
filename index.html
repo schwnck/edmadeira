@@ -11,6 +11,38 @@
 		<meta property="og:type" content="website">
 		<meta name="twitter:card" content="summary_large_image">
 		<link rel="icon" type="image/png" href="img/logo_edmadeira.png">
+		<script type="application/ld+json">
+		{
+			"@context": "https://schema.org",
+			"@type": "LocalBusiness",
+			"name": "EdMADEIRA Filmes",
+			"legalName": "EdMADEIRA Filmes CNPJ 22.105.428/0001-31",
+			"description": "Produtora audiovisual boutique em São Paulo. Documentários, filmes publicitários, branded content e videoclipes com precisão artesanal.",
+			"url": "https://edmadeirafilmes.com.br",
+			"logo": "https://edmadeirafilmes.com.br/img/logo_edmadeira.png",
+			"address": {
+				"@type": "PostalAddress",
+				"addressLocality": "São Paulo",
+				"addressRegion": "SP",
+				"addressCountry": "BR"
+			},
+			"areaServed": "Brasil",
+			"knowsLanguage": "pt-BR",
+			"sameAs": [],
+			"hasOfferCatalog": {
+				"@type": "OfferCatalog",
+				"name": "Serviços Audiovisuais",
+				"itemListElement": [
+					{"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Vídeo Institucional"}},
+					{"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Documentário"}},
+					{"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Branded Content"}},
+					{"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Videoclipe"}},
+					{"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Filme Publicitário"}},
+					{"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Vídeo para Redes Sociais"}}
+				]
+			}
+		}
+		</script>
 		<script src="https://cdn.tailwindcss.com"></script>
 
 		<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -31,7 +63,7 @@
         if (this.maxScroll === 0) return 0;
         let ratio = this.scrollPos / this.maxScroll;
         ratio = Math.max(0, Math.min(ratio, 1));
-        return ratio * 300; 
+        return ratio * 400;
     },
     get currentSection() {
         if (window.innerHeight === 0) return 0;
@@ -85,8 +117,9 @@
 
         <div class="hidden md:flex space-x-8 font-gilroy font-bold text-[10px] tracking-[0.4em] uppercase opacity-70 pointer-events-auto">
             <a href="#portfolio" @click.prevent="scrollToSection(1)" :class="currentSection === 1 ? 'text-[#ffc60a] opacity-100' : 'text-white hover:text-[#ffc60a] transition-colors'">Portfólio</a>
-            <a href="#sobre" @click.prevent="scrollToSection(2)" :class="currentSection === 2 ? 'text-[#ffc60a] opacity-100' : 'text-white hover:text-[#ffc60a] transition-colors'">Sobre</a>
-            <a href="#contato" @click.prevent="scrollToSection(3)" :class="currentSection === 3 ? 'text-[#ffc60a] opacity-100' : 'text-white hover:text-[#ffc60a] transition-colors'">Contato</a>
+            <a href="#servicos" @click.prevent="scrollToSection(2)" :class="currentSection === 2 ? 'text-[#ffc60a] opacity-100' : 'text-white hover:text-[#ffc60a] transition-colors'">Serviços</a>
+            <a href="#sobre" @click.prevent="scrollToSection(3)" :class="currentSection === 3 ? 'text-[#ffc60a] opacity-100' : 'text-white hover:text-[#ffc60a] transition-colors'">Sobre</a>
+            <a href="#contato" @click.prevent="scrollToSection(4)" :class="currentSection === 4 ? 'text-[#ffc60a] opacity-100' : 'text-white hover:text-[#ffc60a] transition-colors'">Contato</a>
         </div>    
         
         <button @click="mobileMenuOpen = true" class="md:hidden pointer-events-auto text-white p-2">
@@ -113,17 +146,21 @@
 			</button>
 
 			<div class="flex flex-col space-y-8 font-gilroy font-bold text-4xl uppercase tracking-tighter">
-				<a href="#portfolio" 
-				   @click.prevent="mobileMenuOpen = false; setTimeout(() => scrollToSection(1), 100)" 
+				<a href="#portfolio"
+				   @click.prevent="mobileMenuOpen = false; setTimeout(() => scrollToSection(1), 100)"
 				   :class="currentSection === 1 ? 'text-[#ffc60a]' : 'text-white'">Portfólio</a>
 
-				<a href="#sobre" 
-				   @click.prevent="mobileMenuOpen = false; setTimeout(() => scrollToSection(2), 100)" 
-				   :class="currentSection === 2 ? 'text-[#ffc60a]' : 'text-white'">Sobre</a>
+				<a href="#servicos"
+				   @click.prevent="mobileMenuOpen = false; setTimeout(() => scrollToSection(2), 100)"
+				   :class="currentSection === 2 ? 'text-[#ffc60a]' : 'text-white'">Serviços</a>
 
-				<a href="#contato" 
-				   @click.prevent="mobileMenuOpen = false; setTimeout(() => scrollToSection(3), 100)" 
-				   :class="currentSection === 3 ? 'text-[#ffc60a]' : 'text-white'">Contato</a>
+				<a href="#sobre"
+				   @click.prevent="mobileMenuOpen = false; setTimeout(() => scrollToSection(3), 100)"
+				   :class="currentSection === 3 ? 'text-[#ffc60a]' : 'text-white'">Sobre</a>
+
+				<a href="#contato"
+				   @click.prevent="mobileMenuOpen = false; setTimeout(() => scrollToSection(4), 100)"
+				   :class="currentSection === 4 ? 'text-[#ffc60a]' : 'text-white'">Contato</a>
 			</div>
 
 			<div class="absolute bottom-10 left-10">
@@ -131,12 +168,12 @@
 			</div>
 		</div>
 
-		<main class="h-[400dvh] relative">
+		<main class="h-[500dvh] relative">
 			<div class="absolute inset-0 z-0">
-			<div class="section-snap-point"></div> <div class="section-snap-point"></div> <div class="section-snap-point"></div> <div class="section-snap-point"></div> </div>
+			<div class="section-snap-point"></div> <div class="section-snap-point"></div> <div class="section-snap-point"></div> <div class="section-snap-point"></div> <div class="section-snap-point"></div> </div>
 
 			<div class="sticky top-0 h-screen w-full overflow-hidden bg-black z-10">
-				<div class="flex h-full w-[400vw] will-change-transform" 
+				<div class="flex h-full w-[500vw] will-change-transform"
 					 :style="`transform: translateX(-${translatePercentage}vw);`"
 					 style="transition: transform 0.1s ease-out;">
 
@@ -317,6 +354,64 @@
 		</div>
 	</section>
 
+					<section id="servicos" class="w-screen h-screen flex-shrink-0 relative flex flex-col items-center justify-center border-r border-white/5 bg-[#050505] px-6 md:px-20 overflow-hidden">
+
+	<div class="absolute inset-0 z-0 pointer-events-none opacity-5">
+		<div class="absolute inset-0" style="background: repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(255,198,10,0.3) 80px), repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(255,198,10,0.3) 80px);"></div>
+	</div>
+
+	<div class="relative z-10 w-full max-w-6xl will-change-transform"
+		 :style="`transform: translateX(${-(translatePercentage - 200) * 0.06}vw);`">
+
+		<h2 class="font-gilroy font-bold text-3xl md:text-7xl uppercase mb-12 md:mb-16 text-white leading-tight">
+			O que <span class="text-[#ffc60a]">fazemos.</span>
+		</h2>
+
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/5">
+
+			<div class="bg-[#050505] p-8 md:p-10 group hover:bg-white/[0.03] transition-colors">
+				<span class="font-gilroy font-bold text-[10px] tracking-[0.4em] uppercase text-[#ffc60a] mb-4 block">01</span>
+				<h3 class="font-gilroy font-bold text-xl md:text-2xl uppercase text-white mb-3">Vídeo Institucional</h3>
+				<p class="font-serifa italic text-sm md:text-base text-gray-400 leading-relaxed">Histórias que posicionam marcas, empresas e organizações com credibilidade e impacto duradouro.</p>
+			</div>
+
+			<div class="bg-[#050505] p-8 md:p-10 group hover:bg-white/[0.03] transition-colors">
+				<span class="font-gilroy font-bold text-[10px] tracking-[0.4em] uppercase text-[#ffc60a] mb-4 block">02</span>
+				<h3 class="font-gilroy font-bold text-xl md:text-2xl uppercase text-white mb-3">Documentário</h3>
+				<p class="font-serifa italic text-sm md:text-base text-gray-400 leading-relaxed">Narrativas reais com cuidado artesanal. Do curta ao longa, do social ao cultural.</p>
+			</div>
+
+			<div class="bg-[#050505] p-8 md:p-10 group hover:bg-white/[0.03] transition-colors">
+				<span class="font-gilroy font-bold text-[10px] tracking-[0.4em] uppercase text-[#ffc60a] mb-4 block">03</span>
+				<h3 class="font-gilroy font-bold text-xl md:text-2xl uppercase text-white mb-3">Branded Content</h3>
+				<p class="font-serifa italic text-sm md:text-base text-gray-400 leading-relaxed">Conteúdo que conecta marcas a pessoas através de histórias com valor genuíno.</p>
+			</div>
+
+			<div class="bg-[#050505] p-8 md:p-10 group hover:bg-white/[0.03] transition-colors">
+				<span class="font-gilroy font-bold text-[10px] tracking-[0.4em] uppercase text-[#ffc60a] mb-4 block">04</span>
+				<h3 class="font-gilroy font-bold text-xl md:text-2xl uppercase text-white mb-3">Videoclipe</h3>
+				<p class="font-serifa italic text-sm md:text-base text-gray-400 leading-relaxed">Direção de arte e linguagem cinematográfica a serviço da música e dos artistas.</p>
+			</div>
+
+			<div class="bg-[#050505] p-8 md:p-10 group hover:bg-white/[0.03] transition-colors">
+				<span class="font-gilroy font-bold text-[10px] tracking-[0.4em] uppercase text-[#ffc60a] mb-4 block">05</span>
+				<h3 class="font-gilroy font-bold text-xl md:text-2xl uppercase text-white mb-3">Redes Sociais</h3>
+				<p class="font-serifa italic text-sm md:text-base text-gray-400 leading-relaxed">Vídeos pensados para o digital: formato, ritmo e narrativa adaptados para cada plataforma.</p>
+			</div>
+
+			<div class="bg-[#050505] p-8 md:p-10 flex flex-col justify-between group hover:bg-white/[0.03] transition-colors">
+				<div>
+					<span class="font-gilroy font-bold text-[10px] tracking-[0.4em] uppercase text-[#ffc60a] mb-4 block">06</span>
+					<h3 class="font-gilroy font-bold text-xl md:text-2xl uppercase text-white mb-3">Filme Publicitário</h3>
+					<p class="font-serifa italic text-sm md:text-base text-gray-400 leading-relaxed">Campanhas com precisão técnica e olhar autoral. Para agências e anunciantes.</p>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+					</section>
+
 					<section id="sobre" class="w-screen h-screen flex-shrink-0 relative flex items-center justify-center border-r border-white/5">
 	 <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
 	<img src="img/sobre-photo_1440.jpg"
@@ -326,12 +421,12 @@
 		 sizes="150vw"
 		 class="absolute top-0 w-[150vw] max-w-none h-full object-cover grayscale opacity-30 will-change-transform" 
 		 style="left: -25vw;"
-		 :style="`transform: translateX(${(translatePercentage - 200) * 0.2}vw);`" 
+		 :style="`transform: translateX(${(translatePercentage - 300) * 0.2}vw);`"
 		 alt="Fundo Sobre">
 	</div>
 
 	<div class="relative z-10 text-center max-w-4xl px-8 will-change-transform"
-		 :style="`transform: translateX(${-(translatePercentage - 200) * 0.08}vw);`">
+		 :style="`transform: translateX(${-(translatePercentage - 300) * 0.08}vw);`">
 
 		<h2 class="font-gilroy font-bold text-3xl md:text-7xl uppercase mb-8 text-white leading-tight">
 			Experiência e <br class="md:hidden"> Renovação
@@ -351,7 +446,7 @@
 							 sizes="150vw"
 							 class="absolute top-0 w-[150vw] max-w-none h-full object-cover opacity-20 will-change-transform" 
 							 style="left: -25vw;"
-							 :style="`transform: translateX(${(translatePercentage - 300) * 0.2}vw);`" 
+							 :style="`transform: translateX(${(translatePercentage - 400) * 0.2}vw);`"
 							 alt="Fundo Contacto">
 					</div>
 
