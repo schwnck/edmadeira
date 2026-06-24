@@ -198,5 +198,11 @@ Items identified during the initial code audit. Ordered roughly by priority.
 - [ ] **Schema.org markup** — Add `LocalBusiness` + `VideoObject` JSON-LD to `<head>`. Enables rich results in Google Search. Include ANCINE registration in `legalName`.
 - [ ] **`llms.txt` file** — Add a root-level `llms.txt` (plain text, ~500 words) describing EdMADEIRA's services, credits (WHO, Bienal de São Paulo, CENPEC), and contact. AI search engines (Perplexity, ChatGPT) index this and cite it when users ask for production company recommendations.
 - [ ] **Services section** — Every competitor lists services explicitly. Add a fifth section (or fold into Sobre) listing: vídeo institucional, documentário, branded content, videoclipe, vídeo para redes sociais. Improves SEO keyword targeting and helps clients identify fit quickly.
-- [ ] **Video Brief Generator** — Client-side free tool (pure JS, no backend) that walks a prospect through project type, audience, tone, timeline, and budget range, then outputs a structured creative brief they can copy/download. Lead captured via existing Formspree form ("Send brief to my email"). Differentiator: positions EdMADEIRA as organized and professional; shareable among agencies and marketing teams. Can live at `brief.html` or as a modal in the Contato section.
-- [ ] **WhatsApp / direct contact link** — Add a WhatsApp CTA alongside the form. Reduces friction for mobile users and matches how Brazilian B2B clients actually prefer to make first contact.
+- [ ] **Video Brief Generator** — Client-side free tool (pure JS, no backend). Modal triggered by "Monte seu brief" button in the Contato section. 4-step flow:
+  - Step 1: Tipo de projeto (Institucional / Documentário / Branded Content / Videoclipe / Publicitário / Redes Sociais)
+  - Step 2: Sobre o projeto (descrição livre, público-alvo, tom: Formal / Equilibrado / Descontraído)
+  - Step 3: Logística (prazo desejado, faixa de orçamento: até 15k / 15–50k / 50k+ / a definir — **confirm ranges with client**)
+  - Step 4: Dados de contato (nome, empresa, email) → Formspree submits to both prospect and EdMADEIRA + copy-to-clipboard
+  - Output: formatted brief displayed inline, with "falar com a EdMADEIRA" WhatsApp link at the bottom (**needs WhatsApp number**)
+  - Blocked on: Formspree ID + WhatsApp number + budget range confirmation from client
+- [ ] **WhatsApp CTA** — `wa.me` link in Contato section alongside the form. Pre-filled message: "Olá, gostaria de conversar sobre um projeto". Blocked on: WhatsApp number from client.
